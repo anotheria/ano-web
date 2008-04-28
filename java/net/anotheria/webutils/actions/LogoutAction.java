@@ -7,12 +7,16 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-public class LogoutAction extends BaseAction{
+public class LogoutAction extends AccessControlAction{
 
 	@Override
 	public ActionForward doExecute(ActionMapping mapping, ActionForm af, HttpServletRequest req, HttpServletResponse res) throws Exception {
 		removeBeanFromSession(req, BEAN_USER_ID);
-		return mapping.findForward("success");
+		res.addCookie(createAuthCookie(req, "CAFE", "BABE"));
+		res.sendRedirect(req.getContextPath());
+		return null;
+		//return mapping.findForward("success");
 	}
 
 }
+ 
