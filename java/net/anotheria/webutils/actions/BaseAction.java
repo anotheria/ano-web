@@ -21,12 +21,7 @@ import org.apache.struts.util.MessageResourcesFactory;
 
 
 /** 
- * @author lanny
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
+ * @author lrosenberg
  */
 public abstract class BaseAction extends MoskitoAction{
 
