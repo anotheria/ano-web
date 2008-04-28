@@ -51,7 +51,7 @@ public class LoginAction extends AccessControlAction{
 			String cookieName = getAuthCookieName(req);
 			for (Cookie c : req.getCookies()){
 				if (c!=null && c.getName().equals(cookieName)){
-					authString = getCryptTool().decryptFromHex(c.getValue());
+					authString = getCryptTool().decryptFromHex(c.getValue()).trim();
 					break;
 				}
 			}
