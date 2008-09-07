@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import org.jdom.input.SAXBuilder;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class XMLUserManager {
-	private static Hashtable users;
+	private static Hashtable<String, XMLUser> users;
 	 
 	private static Logger log;
 	private static XMLUserManager instance;
@@ -50,10 +51,10 @@ public class XMLUserManager {
 	}
 	
 	public boolean canLoginUser(String userId, String password){
-		String p = (String)users.get(userId);
-		if (p==null)
+		XMLUser u = users.get(userId);
+		if (u==null)
 			return false;
-		return p.equals(password);
+		return u.getPassword().equals(password);
 	}
 	
 	public boolean isKnownUser(String userId){
@@ -68,7 +69,7 @@ public class XMLUserManager {
 			}catch(IOException ignored){}
 			return ;
 		}
-		users = new Hashtable();
+		users = new Hashtable<String, XMLUser>();
 		try{		
 			byte data[] = new byte[stream.available()];
 			stream.read(data);
@@ -101,7 +102,7 @@ public class XMLUserManager {
 	
 			Element root = doc.getRootElement();
 		
-			List users = root.getChildren();
+			List<Element> users = root.getChildren();
 			for (int i=0;i<users.size(); i++){
 				Element userElem = (Element) users.get(i);
 				parseUser(userElem);
@@ -115,8 +116,16 @@ public class XMLUserManager {
 	private static void parseUser(Element e){
 		String username = e.getChild("username").getText();
 		String pwd      = e.getChild("password").getText();
-		users.put(username, pwd);
-		log.debug("added user "+username);
+		String roles    = "";
+		try{
+			roles = e.getChildText("roles");
+		}catch(Exception ignored){
+			//older installations don't have the roles attribute in their xml user list
+		}
+		
+		XMLUser toAdd = new XMLUser(username, pwd, roles);
+		users.put(toAdd.getUsername(), toAdd);
+		log.debug("added user "+toAdd);
 	}
 		
 	
@@ -126,5 +135,10 @@ public class XMLUserManager {
 		//XMLUserManager.init(f);
 		XMLUserManager.init("/users.xml");
 		System.out.println(XMLUserManager.users);
+		
+		Collection<XMLUser> col = XMLUserManager.users.values();
+		for (XMLUser u : col){
+			System.out.println(u+" is in Role mapeditor "+u.isUserInRole("mapeditor"));
+		}
 	}
 }
