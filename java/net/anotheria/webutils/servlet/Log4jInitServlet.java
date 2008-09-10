@@ -31,6 +31,8 @@ import org.apache.log4j.xml.DOMConfigurator;
  * first file found will be used. If file-path starts with a '/'
  * it will be treated as an absolut path otherwise it is relative
  * to the webapp's docPath
+ * 
+ * Additionally you may specify multiple ${...} where ... is one system.property 
  *  
  */
 public class Log4jInitServlet extends HttpServlet {
@@ -42,6 +44,7 @@ public class Log4jInitServlet extends HttpServlet {
 		
 		String prefix =  config.getServletContext().getRealPath("/");
 		String log4jInitFileString = config.getInitParameter(INIT_PARAM);
+		log4jInitFileString = replaceWithSystemproperty(log4jInitFileString);
 		String file = findFile(prefix, log4jInitFileString);
 		
 		// if the log4j-init-file is not set, then no point in trying
@@ -67,5 +70,27 @@ public class Log4jInitServlet extends HttpServlet {
 		}
 		return null;
 	}
-
+	
+	private String replaceWithSystemproperty(String aString) {
+		StringBuilder result = new StringBuilder();
+		int dollarPos, endPos = 0;
+		String after = aString;
+		do {
+			dollarPos = aString.indexOf("${", endPos);
+			if(dollarPos >= 0) {
+				endPos = aString.indexOf('}', dollarPos);
+				String before = aString.substring(0,dollarPos);
+				String name = aString.substring(dollarPos+2, endPos);
+				after = aString.substring(endPos+1);
+				result.append(before);
+				String value = System.getProperty(name);
+				if(value != null) {
+					result.append(value);
+				}
+			} else {
+				result.append(after);
+			}
+		} while(dollarPos >= 0);
+		return result.toString();
+	}
 }
