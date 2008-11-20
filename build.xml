@@ -10,7 +10,7 @@
 	<property name="lib.project" value="${basedir}/lib"/>
 
 	<property name="etc" value="${basedir}/etc"/>
-	<property name="html" value="${basedir}/web"/>
+	<property name="html" value="html"/>
 
 	<property name="generation.output" value="${basedir}/generated"/>	
 
@@ -46,6 +46,9 @@
          	<fileset dir="${classes.dir}">
          		<include name="**/*"/>
          	</fileset>
+         	<fileset dir="${basedir}">
+         		<include name="${html}/**/*"/>
+         	</fileset>
 		</jar>
 	</target>
 	
@@ -57,6 +60,12 @@
 	    <copy todir="${lib.dest}">
 	      <fileset dir="${lib.project}"/>
 	    </copy>
+	</target>
+	
+	<target name="deploy" depends="dist">
+		<copy todir="${basedir}/../ano-libs/lib">
+			<fileset file="${dist.dir}/${target.jar.name}"></fileset>
+		</copy>
 	</target>
 	
 	<target name="all" depends="dist"/>
