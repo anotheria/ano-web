@@ -25,7 +25,13 @@ YAHOO.namespace('YAHOO.anoweb.widget');
             value: false,
             validator: Lang.isString, 
             supercedes: ["visible"] 
-        }
+        },
+        "RESIZABLE": { 
+            key: "resizable",
+            value: true,
+            validator: Lang.isBoolean, 
+            supercedes: ["visible"] 
+        }    	
     };
 
     var AnoPanel = YAHOO.anoweb.widget.AnoPanel;
@@ -70,6 +76,12 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		        validator: DEFAULT_CONFIG.DATA_SRC.validator, 
 		        supercedes: DEFAULT_CONFIG.DATA_SRC.supercedes 
 		    });
+		    
+		    this.cfg.addProperty(DEFAULT_CONFIG.RESIZABLE.key, {
+		    	value: DEFAULT_CONFIG.RESIZABLE.value,
+		        validator: DEFAULT_CONFIG.RESIZABLE.validator, 
+		        supercedes: DEFAULT_CONFIG.RESIZABLE.supercedes 
+		    });
 		},
 		
 		dataConnection: null,
@@ -84,6 +96,41 @@ YAHOO.namespace('YAHOO.anoweb.widget');
         		}
 		},
 		
+		render: function (appendToNode, moduleElement) {
+			AnoPanel.superclass.render.apply(this, arguments);
+			AnoPanel.manager.register(this);
+			if(this.cfg.getProperty('resizable')){
+				log("Creating resize for element: " + this.innerElement.id);
+				this._resize = new YAHOO.util.Resize(this.innerElement, {
+					handles: ["br"],
+					autoRatio: false,
+					minWidth: 300,
+					minHeight: 100,
+					maxWidth: 1024,
+					status: false 
+				});
+				log("Resize created!");
+				
+//				this._resize.on("startResize", function(args) {
+//	    		    if (this.cfg.getProperty("constraintoviewport")) {
+//	                    var D = YAHOO.util.Dom;
+//	                    var clientRegion = D.getClientRegion();
+//	                    var elRegion = D.getRegion(this.element);
+//	                    resize.set("maxWidth", clientRegion.right - elRegion.left - YAHOO.widget.Overlay.VIEWPORT_OFFSET);
+//	                    resize.set("maxHeight", clientRegion.bottom - elRegion.top - YAHOO.widget.Overlay.VIEWPORT_OFFSET);
+//		            } else {
+//	                    resize.set("maxWidth", null);
+//	                    resize.set("maxHeight", null);
+//		        	}
+//	            }, this, true);
+
+			    this._resize.on("resize", function(args) {
+		              var panelHeight = args.height;
+		              this.cfg.setProperty("height", panelHeight + "px");
+		          }, this, true);
+			}
+		},
+		
 		show: function () {
 			if (this.cfg.getProperty('dataSrc') ) {
 				this.setBody(this.cfg.getProperty('loadContent'));
@@ -94,6 +141,10 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 			return AnoPanel.superclass.show.call(this);
         }
     });
+    
+    var log = function(message){
+    	YAHOO.log(message, "info", "AnoPanle");
+    }
     
     var _dataConnect = function() {
         if (!YAHOO.util.Connect) {
@@ -124,7 +175,8 @@ YAHOO.namespace('YAHOO.anoweb.widget');
             }
         );
     };
-
+    
+    AnoPanel.manager = new YAHOO.widget.OverlayManager();
     
 })();
 

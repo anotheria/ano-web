@@ -29,33 +29,26 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 			
 			
 			oConfig.dataSrc = oConfig.dataSrc || this.get('href');
-			oConfig.e = oConfig.panel || Dom.generateId();
+			oConfig.panelElement = oConfig.panelElement || Dom.generateId();
 			
 			this._config = oConfig;
 		    
-//		    this.resizer.on("resize", function(args) {
-//                var panelHeight = args.height;
-//                this.cfg.setProperty("height", panelHeight + "px");
-//            }, this, true);
 
 //			this.anoPanel.subscripe('contentChanged', function(){
 //				this.fireContentChanged();
 //			});
 			
+			this._rendered = false;
 			this.on('click', function (event) {
 				Event.preventDefault(event);
-				var anoPanel = new YAHOO.anoweb.widget.AnoPanel(this._config.container, this._config);
-				anoPanel.render(this._config.container);
-				//PanelLink.manager.register(anoPanel);
-				//alert('Container: ' + this.container);
-//				this.resizer = new YAHOO.util.Resize(this.get('id'), {
-//					handles: ["br"],
-//					autoRatio: false,
-//					minWidth: 300,
-//					minHeight: 100,
-//					status: false 
-//				});
-				anoPanel.show();
+				if(!this._rendered){
+					this._rendered = true;
+					this.anoPanel = new YAHOO.anoweb.widget.AnoPanel(this._config.panelElement, this._config);
+					this.anoPanel.render(this._config.container);
+					this.anoPanel.moveTo(window.pageXOffset + event.clientX, window.pageYOffset + event.clientY);
+				}
+				this.anoPanel.show();
+				this.anoPanel.focus();
 			}, this, true);
 
 		} 
