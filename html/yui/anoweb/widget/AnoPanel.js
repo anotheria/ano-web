@@ -90,7 +90,8 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     	
     	loadHandler:  {
                 success: function(o) {
-            		this.setBody(o.responseText);
+            		//this.setBody(o.responseText);
+            		YAHOO.plugin.Dispatcher.process(this.body, o.responseText);
         		},
         		failure: function(o) {
         		}
@@ -134,9 +135,10 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		show: function () {
 			if (this.cfg.getProperty('dataSrc') ) {
 				this.setBody(this.cfg.getProperty('loadContent'));
-				if ( !this._loading) {
-					_dataConnect.call(this);
-				}
+				//if ( !this._loading) {
+				//	_dataConnect.call(this);
+				//}
+				YAHOO.plugin.Dispatcher.fetch (this.body, this.cfg.getProperty('dataSrc'));
 			}
 			return AnoPanel.superclass.show.call(this);
         }
