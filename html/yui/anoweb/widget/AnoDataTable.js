@@ -6,6 +6,9 @@ YAHOO.namespace('anoweb.widget');
 	
 	YAHOO.anoweb.widget.AnoDataTable = function(elContainer , oColumnSet , oDataSource , oConfigs) {
 		YAHOO.anoweb.widget.AnoDataTable.superclass.constructor.call(this, elContainer , oColumnSet , oDataSource , oConfigs);
+		YAHOO.anoweb.widget.AnoDataTable.instancesCounter++;
+		this.instanceId = YAHOO.anoweb.widget.AnoDataTable.instancesCounter;
+		log("Instantiated with ID " + this.instanceId);
 		this.createEvent('beforeRefresh');
 		this.createEvent('refresh');
 	};
@@ -26,30 +29,42 @@ YAHOO.namespace('anoweb.widget');
 		this._oDataSource.sendRequest(oReq, callback);
 	 }; 
 	 
+    
 	 ADT.prototype.update = function(interval, oReq){
-		 //this.updateStop();
-		 if(ADT.isValidUpdateInterval(interval))
-			 _updating = Lang.later(interval,this,function(_oReq){
+		 this.updateStop();
+		 if(ADT.isValidUpdateInterval(interval)){
+			 this._updating = Lang.later(interval,this,function(_oReq){
+				 log("AUTO_UPDATE REQUEST for instance " + this.instanceId);
 				 this.refresh(_oReq);
-			 },oReq,true);
+			 },oReq,this.instanceId);
+			 log("AUTO_UPDATE STARTED for instance " + this.instanceId);
+		 }
 	 }
 	 
 	 ADT.prototype.updateStop = function(interval, oReq){
-		 if(_updating){
-			 _updating.cancel.call(this);
-			 _updating = false;
+		 if(this.isUpdate()){
+			 log("AUTO_UPDATE STOPING for instance " + this.instanceId + ", updating dispatcher Id: " + this._updating.interval);
+			 this._updating.cancel();
+			 this._updating = false;
+			 log("AUTO_UPDATE STOPED for instance " + this.instanceId);
 		 }
 	 }
-    
+	 
 	 ADT.isValidUpdateInterval = function(interval){
-		 return true;
+		 return interval > 0;
 	 }
 	 
 	 ADT.prototype.isUpdate = function(){
-		 return !(_updating === false);
+		 if(this._updating == null)
+			 this._updating = false;
+		 return !(this._updating === false);
 	 }
 	 
-	 var _updating = false;
+	 ADT.instancesCounter = 0;
+	 
+	 ADT.getInstacesCounter = function(){
+		 return ADT.instanceCounter;
+	 }
 	 
     var log = function(message){
     	YAHOO.log(message, "info", "AnoDataTable");
