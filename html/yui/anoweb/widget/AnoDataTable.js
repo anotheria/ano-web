@@ -14,14 +14,53 @@ YAHOO.namespace('anoweb.widget');
 	};
 	
 	var ADT = YAHOO.anoweb.widget.AnoDataTable;
-	Lang.extend(ADT, DT);
+	Lang.extend(ADT, DT,{
+		_handleDataReturnPayload : function (oRequest, oResponse, oPayload) {
+		    oPayload = this.handleDataReturnPayload(oRequest, oResponse, oPayload);
+		    if(oPayload) {
+		        // Update pagination
+		        var oPaginator = this.get('paginator');
+		        if (oPaginator) {
+		            // Update totalRecords
+		            if(this.get("dynamicData")) {
+		                if (lang.isNumber(oPayload.totalRecords)) {
+		                    oPaginator.set('totalRecords',oPayload.totalRecords);
+		                }
+		            }
+		            else {
+		                oPaginator.set('totalRecords',this._oRecordSet.getLength());
+		            }
+		            // Update other paginator values
+		            if (lang.isObject(oPayload.pagination)) {
+		                oPaginator.set('rowsPerPage',oPayload.pagination.rowsPerPage);
+		                oPaginator.set('recordOffset',oPayload.pagination.recordOffset);
+		            }
+		        }
+	
+		        // Update sorting
+		        if (oPayload.sortedBy) {
+		            this.set('sortedBy', oPayload.sortedBy);
+		            var oColumn = oPayload.sortedBy.column;
+		            if(oColumn && oColumn.sortable) {
+		                this.sortColumn(oColumn, oPayload.sortedBy.dir);
+		            }
+
+		        }
+		        // Backwards compatibility for sorting
+		        else if (oPayload.sorting) {
+		            this.set('sortedBy', oPayload.sorting);
+		        }
+		    }
+		}
+	});
 	
 	ADT.prototype.refresh = function(oReq) {
 		oReq = oReq || '';
 		this.fireEvent('beforeRefresh');
 		var oState = this.getState();
 		var callback = {
-				success : this.onDataReturnInitializeTable,
+				//success : this.onDataReturnInitializeTable,
+				success : this.onDataReturnSetRows,
 				failure : this.onDataReturnSetRows,
 				argument : oState, // Pass along the new state to the callback
 				scope : this
