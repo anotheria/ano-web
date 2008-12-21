@@ -56,11 +56,13 @@ YAHOO.namespace('anoweb.widget');
 	
 	ADT.prototype.refresh = function(oReq) {
 		oReq = oReq || '';
+		if(Lang.isFunction(oReq))
+			oReq = oReq.call(oReq);
 		this.fireEvent('beforeRefresh');
 		var oState = this.getState();
 		var callback = {
-				//success : this.onDataReturnInitializeTable,
-				success : this.onDataReturnSetRows,
+				success : this.onDataReturnInitializeTable,
+				//success : this.onDataReturnSetRows,
 				failure : this.onDataReturnSetRows,
 				argument : oState, // Pass along the new state to the callback
 				scope : this
