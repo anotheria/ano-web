@@ -84,19 +84,6 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		    });
 		},
 		
-		dataConnection: null,
-		
-		_loading: false,
-    	
-    	loadHandler:  {
-                success: function(o) {
-            		//this.setBody(o.responseText);
-            		YAHOO.plugin.Dispatcher.process(this.body, o.responseText);
-        		},
-        		failure: function(o) {
-        		}
-		},
-		
 		render: function (appendToNode, moduleElement) {
 			AnoPanel.superclass.render.apply(this, arguments);
 			AnoPanel.manager.register(this);
@@ -133,50 +120,37 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		},
 		
 		show: function () {
-			if (this.cfg.getProperty('dataSrc') ) {
+			if (this.cfg.getProperty('dataSrc') && !this.loaded) {
 				this.setBody(this.cfg.getProperty('loadContent'));
-				//if ( !this._loading) {
-				//	_dataConnect.call(this);
-				//}
 				YAHOO.plugin.Dispatcher.fetch (this.body, this.cfg.getProperty('dataSrc'));
+				this.loaded = true;
 			}
 			return AnoPanel.superclass.show.call(this);
         }
     });
     
+    AnoPanel.prototype.hideIfFocused = function(){
+		if(this.isFocused())
+			this.hide();
+	}
+    
+    AnoPanel.prototype.isFocused = function(){
+    	return AnoPanel.manager.getActive() == this;
+    }
+    
     var log = function(message){
     	YAHOO.log(message, "info", "AnoPanle");
     }
     
-    var _dataConnect = function() {
-        if (!YAHOO.util.Connect) {
-            YAHOO.log('YAHOO.util.Connect dependency not met',
-                    'error', 'Tab');
-            return false;
-        }
-
-        this._loading = true; 
-        this.dataConnection = YAHOO.util.Connect.asyncRequest(
-            this.cfg.getProperty('loadMethod'),
-            this.cfg.getProperty('dataSrc'), 
-            {
-                success: function(o) {
-            		YAHOO.log('content loaded successfully', 'info', 'AnoPanel');
-                    this.loadHandler.success.call(this, o);
-                    //this.set('dataLoaded', true);
-                    this.dataConnection = null;
-                    this._loading = false;
-                },
-                failure: function(o) {
-                    YAHOO.log('loading failed: ' + o.statusText, 'error', 'AnoPanel');
-                    this.loadHandler.failure.call(this, o);
-                    this.dataConnection = null;
-                    this._loading = false;
-                },
-                scope: this
-            }
-        );
-    };
+    AnoPanel.hideFocused = function(){
+    	focusedPanel = AnoPanel.manager.getActive();
+    	focusedPanel.blur();
+    	focusedPanel.hide();
+    }
+    
+    AnoPanel.hideAll = function(){
+    	AnoPanel.manager.hideAll();
+    }
     
     AnoPanel.manager = new YAHOO.widget.OverlayManager();
     

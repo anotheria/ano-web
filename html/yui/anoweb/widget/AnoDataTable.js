@@ -41,7 +41,7 @@ YAHOO.namespace('anoweb.widget');
 		        if (oPayload.sortedBy) {
 		            this.set('sortedBy', oPayload.sortedBy);
 		            var oColumn = oPayload.sortedBy.column;
-		            if(oColumn && oColumn.sortable) {
+		            if(!this.get("dynamicData") && oColumn && oColumn.sortable) {
 		                this.sortColumn(oColumn, oPayload.sortedBy.dir);
 		            }
 
