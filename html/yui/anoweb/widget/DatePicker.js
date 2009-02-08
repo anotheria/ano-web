@@ -23,6 +23,7 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     			this.initOverlay();
     			this.initCalendar();
     			this.initEvents();
+    			this.hide();
     		},
     		
     		initOverlay: function (){
@@ -76,13 +77,20 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		    },
 		    
 			show: function(){
+		    	//DOM.setStyle(this.overlay.element,'display','block');
+		    	this.overlay.bringToTop();
+		    	if(this.showed)
+		    		return;
 		    	this.showed = true;
+		    	this.calendar.show();
 		    	this.overlay.show();
 		    },
 		    
 		    hide: function(){
 		    	this.showed = false;
+		    	this.calendar.hide();
 		    	this.overlay.hide();
+		    	//DOM.setStyle(this.overlay.element,'display','none');
 		    }
     }
 })();
