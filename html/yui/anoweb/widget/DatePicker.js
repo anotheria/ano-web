@@ -56,6 +56,7 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 					if (p_aArgs) {
 						aDate = p_aArgs[0][0];
 						this.inputElement.value = aDate[0] + "-" + aDate[1] + "-" + aDate[2];
+						this.inputElement.focus();
 					}
 					this.hide();
 				},this,true);
