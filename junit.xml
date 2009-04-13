@@ -5,6 +5,8 @@
     <property name="test-results" value="${basedir}/test-results"/>
     <property name="test-dir" value="${test-results}/bin"/>
     <property name="lib" value="${basedir}/lib"/>
+    <property name="junit-run-dir" value="${output.dir}/junit/classes"/>
+
 
     <target name="all" depends="compile,run"/>
 
@@ -22,10 +24,11 @@
                 </fileset>
 
                 <pathelement location="${classes.dir}"/>
+                <pathelement location="${junit-run-dir}"/>
             </classpath>
             <batchtest todir="${test-results}">
-                <fileset dir="${classes.dir}">
-                    <include name="**/junit/**/*Test.class"/>
+                <fileset dir="${junit-run-dir}">
+                    <include name="**/*Test.class"/>
                 </fileset>
             </batchtest>
             <formatter type="brief" usefile="false"/>
