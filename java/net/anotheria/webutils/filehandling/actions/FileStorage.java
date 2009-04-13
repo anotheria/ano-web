@@ -12,14 +12,12 @@ import java.io.FileOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-
-
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
-import net.java.dev.moskito.core.configuration.AbstractConfigurable;
-import net.java.dev.moskito.core.configuration.ConfigurationServiceFactory;
 
-
+import org.apache.log4j.Logger;
+import org.configureme.ConfigurationManager;
+import org.configureme.annotations.ConfigureMe;
+import org.configureme.annotations.Set;
 
 /**
  * @author another
@@ -32,13 +30,16 @@ public class FileStorage {
 	static Logger log;
 	public static String fileStorageDir;
 	
-	public static final String CFG_FILE_STORAGE_DIR = "directory";
 	public static final String DEF_FILE_STORAGE_DIR = "/work/data/files/";
 
 	static{
 		log = Logger.getLogger(FileStorage.class);
-		fileStorageDir = DEF_FILE_STORAGE_DIR; 
-		ConfigurationServiceFactory.getConfigurationService().addConfigurable(new FileStorageConfigurable());
+		fileStorageDir = DEF_FILE_STORAGE_DIR;
+		try{
+			fileStorageDir = ConfigurationManager.INSTANCE.getConfiguration("filestorage").getAttribute("directory");
+		}catch(Exception e){
+			log.error("reading fileStorageDir", e);
+		}
 	}
 	
 	public static void setFileStorageDir(String dir){
@@ -106,23 +107,11 @@ public class FileStorage {
 	
 }
 
-class FileStorageConfigurable extends AbstractConfigurable{
+@ConfigureMe(name="filestorage")
+class FileStorageConfigurable{
 
 
-	/* (non-Javadoc)
-	 * @see de.friendscout.vincent.services.config.IConfigurable#getConfigurationName()
-	 */
-	public String getConfigurationName() {
-		return "filestorage";
+	@Set("directory") public void setDirectory(String value){
+		FileStorage.setFileStorageDir(value);		
 	}
-
-	/* (non-Javadoc)
-	 * @see de.friendscout.vincent.services.config.IConfigurable#setProperty(java.lang.String, java.lang.String)
-	 */
-	public void setProperty(String name, String value) {
-		if (FileStorage.CFG_FILE_STORAGE_DIR.equals(name))
-			FileStorage.setFileStorageDir(value);		
-
-	}
-
 }
