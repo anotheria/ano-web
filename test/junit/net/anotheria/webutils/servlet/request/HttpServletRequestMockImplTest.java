@@ -1,21 +1,22 @@
 package net.anotheria.webutils.servlet.request;
 
 
-import net.anotheria.webutils.servlet.request.MockServletRequestFactory;
-import net.anotheria.webutils.servlet.request.HttpServletRequestMockImpl;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
-import java.util.Map;
-import java.util.Locale;
 import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import junit.framework.TestCase;
 import org.apache.log4j.Logger;
-
+import org.junit.Before;
+import org.junit.Test;
 /**
  * @author: h3llka
  */
-public class HttpServletRequestMockImplTest extends TestCase {
+public class HttpServletRequestMockImplTest {
     private static final Logger log = Logger.getLogger(HttpServletRequestMockImplTest.class);
 
     private static final String CONTEXT_PATH = "anotheriaContext";
@@ -24,7 +25,7 @@ public class HttpServletRequestMockImplTest extends TestCase {
     private Map<String, Object> attributes;
     private Map<String, String> params;
 
-    public void setUp() throws Exception {
+    @Before public void setUp() throws Exception {
         params = new ConcurrentHashMap<String, String>();
         params.put("id", "SomeId1234");
         attributes = new ConcurrentHashMap<String, Object>();
@@ -34,14 +35,14 @@ public class HttpServletRequestMockImplTest extends TestCase {
     /**
      * Just trying to create Request Instance Using MockServletRequestFactory, and check it!
      */
-    public void testInstantiationByFactory() {
+    @Test public void testInstantiationByFactory() {
         httpServletRequestMock = MockServletRequestFactory.createMockedRequest(params, attributes, CONTEXT_PATH, SERVER_NAME, Locale.ENGLISH, 80);
         assertNotNull(httpServletRequestMock);
         checkObject(httpServletRequestMock);
     }
 
 
-    public void testDefaultConstructor() {
+    @Test public void testDefaultConstructor() {
         httpServletRequestMock = new HttpServletRequestMockImpl();
         assertNotNull(httpServletRequestMock);
         assertTrue("Should be True", Collections.EMPTY_MAP.equals(httpServletRequestMock.getParameterMap()));
