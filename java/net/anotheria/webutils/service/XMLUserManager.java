@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,10 +24,8 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 /**
+ * A very basic user manager mainly for embedded authorization purposes.
  * @author another
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class XMLUserManager {
 	private static Map<String, XMLUser> users;
