@@ -31,7 +31,7 @@ public class XMLUserManager {
 	private static Map<String, XMLUser> users;
 	 
 	private static Logger log;
-	private static XMLUserManager instance = new XMLUserManager();
+	private static XMLUserManager instance ;
 	private static boolean inited;
 	
 	static{
@@ -44,6 +44,8 @@ public class XMLUserManager {
 	}
 	
 	public static XMLUserManager getInstance(){
+		if (instance==null)
+			instance = new XMLUserManager();
 		return instance;
 	}
 	
