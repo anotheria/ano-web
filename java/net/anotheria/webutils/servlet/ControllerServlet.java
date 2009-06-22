@@ -22,7 +22,7 @@ public class ControllerServlet extends ActionServlet {
 	
 	static {
 		log = Logger.getLogger(ControllerServlet.class);
-		log.debug("Logger initialized.");
+		log.debug("ControllerServlet Logger initialized.");
 	}
 	
 	/**
