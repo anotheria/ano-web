@@ -32,7 +32,7 @@ public class XMLUserManager {
 	private static Hashtable<String, XMLUser> users;
 	 
 	private static Logger log;
-	private static XMLUserManager instance;
+	private static XMLUserManager instance = new XMLUserManager();
 	private static boolean inited;
 	
 	static{
@@ -45,8 +45,6 @@ public class XMLUserManager {
 	}
 	
 	public static XMLUserManager getInstance(){
-		if (instance==null)
-			instance = new XMLUserManager();
 		return instance;
 	}
 	

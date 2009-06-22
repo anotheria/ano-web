@@ -23,7 +23,9 @@ public class XMLUser {
 	
 	public XMLUser(String aUserName, String aPassword, List<String> someRoles){
 		this(aUserName, aPassword);
-		roles.addAll(someRoles);
+		if (!(someRoles==null)){
+			roles.addAll(someRoles);
+		}
 	}
 	
 	public XMLUser(String aUserName, String aPassword, String commaSeparatedListWithRoles){
@@ -34,7 +36,7 @@ public class XMLUser {
 		return roles.indexOf(role)!=-1 || roles.indexOf("*")!=-1;
 	}
 	
-	public String toString(){
+	@Override public String toString(){
 		return "Username: "+getUsername()+", Password: "+getPassword()+", Roles: "+getRoles();
 	}
 	
