@@ -99,7 +99,7 @@ public class XMLUserManager {
 	
 			Element root = doc.getRootElement();
 		
-			List<Element> users = root.getChildren();
+			@SuppressWarnings("unchecked")List<Element> users = root.getChildren();
 			for (int i=0;i<users.size(); i++){
 				Element userElem = (Element) users.get(i);
 				parseUser(userElem);
