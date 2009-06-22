@@ -15,6 +15,8 @@ import java.io.StringReader;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -29,7 +31,7 @@ import org.jdom.input.SAXBuilder;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class XMLUserManager {
-	private static Hashtable<String, XMLUser> users;
+	private static Map<String, XMLUser> users;
 	 
 	private static Logger log;
 	private static XMLUserManager instance = new XMLUserManager();
@@ -67,7 +69,7 @@ public class XMLUserManager {
 			}catch(IOException ignored){}
 			return ;
 		}
-		users = new Hashtable<String, XMLUser>();
+		users = new ConcurrentHashMap<String, XMLUser>();
 		try{		
 			byte data[] = new byte[stream.available()];
 			stream.read(data);
