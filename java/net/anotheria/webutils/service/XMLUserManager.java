@@ -54,6 +54,10 @@ public class XMLUserManager {
 		return u.getPassword().equals(password);
 	}
 	
+	public boolean userInRole(String userId, String role){
+		return isKnownUser(userId) && users.get(userId).isUserInRole(role);
+	}
+	
 	public boolean isKnownUser(String userId){
 		return users.containsKey(userId);
 	}
