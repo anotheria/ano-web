@@ -7,4 +7,23 @@
 		checkout svn://svn.anotheria.net/opensource/build/trunk as ../build 
 		in order for this build script to work.
 	-->
+	
+	<property name="html" value="${basedir}/html"/>
+	<property name="html.output" value="${classes.dir}/html"/>
+	<target name="prepare" depends="basic-project.prepare,html-prepare"/>
+	
+	<target name="html-prepare">
+		<copy toDir="${html.output}">
+            <fileset dir="${html}">
+                <include name="**/*.html"/>
+            	<include name="**/*.htm"/>
+            	<include name="**/*.css"/>
+            	<include name="**/*.js"/>
+            	<include name="**/*.png"/>
+            	<include name="**/*.gif"/>
+            	<include name="**/*.bmp"/>
+            	<include name="**/*.jpg"/>
+            </fileset>
+        </copy>
+	</target>
 </project>
