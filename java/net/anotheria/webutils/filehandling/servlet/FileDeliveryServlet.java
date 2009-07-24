@@ -33,6 +33,10 @@ public class FileDeliveryServlet extends HttpServlet{
 			throw new ServletException("Not allowed!");
 
 		TemporaryFileHolder h = FileStorage.loadFile(name);
+		if (h==null){
+			res.sendError(404, "Missing binary data, probably file deleted on disk: "+name);
+			return;
+		}
 		byte data[] = h.getData();
 		
 		String mimeType = h.getMimeType(); 
