@@ -4,6 +4,9 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 	YAHOO.anoweb.widget.HidableEditor = function(){
 	};
 	var HidableEditor = YAHOO.anoweb.widget.HidableEditor;
+	
+	HidableEditor.prototype.hidden = false;
+	
 	HidableEditor.prototype.hideEditor = function(){
 		this.saveHTML();				
 	
@@ -18,6 +21,7 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		Dom.setStyle(el, 'top', '');
 		Dom.setStyle(el, 'left', '');
 		Dom.setStyle(el, 'position', 'static');
+		this.hidden = true;
 	};
 	HidableEditor.prototype.showEditor = function(){
 		var fc = this.get('element').previousSibling,
@@ -33,8 +37,19 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		this.get('element_cont').addClass('yui-editor-container');
 		this._setDesignMode('on');
 		this.setEditorHTML(this.get('textarea').value);
-		
+		this.hidden = false;
 	}
+	
+	HidableEditor.prototype.isHidden = function(){
+		return this.hidden;
+	}
+	
+	HidableEditor.prototype.saveHtmlIfShowed = function(){
+		if(!this.hidden)
+			this.saveHTML();
+			
+	}
+	
 	YAHOO.lang.augment(YAHOO.widget.Editor, HidableEditor);
 })();
 
