@@ -19,12 +19,11 @@ package net.anotheria.webutils.stats;
 
 
 import java.io.FileNotFoundException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.anotheria.util.IOUtils;
 import net.anotheria.util.StringUtils;
-import net.java.dev.moskito.core.timing.timer.ITimerConsumer;
-import net.java.dev.moskito.core.timing.timer.TimerServiceConstantsUtility;
-import net.java.dev.moskito.core.timing.timer.TimerServiceFactory;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -35,36 +34,32 @@ import org.apache.log4j.Logger;
  * @author lrosenberg
  * @created on Feb 7, 2005
  */
-public class SystemInfoUtility implements ITimerConsumer{
+public class SystemInfoUtility{
     private static SystemInfo systemInfo;
     
     //zum testen einmal pro sekunde
-    public static final int REREAD_INTERVAL = 1000*60/TimerServiceConstantsUtility.getSleepingUnit();
+    public static final int REREAD_INTERVAL = 1000*60;
     
     private static Logger log;
 
+    private static final Timer timer = new Timer("AnoWebSysInfoUtilityReader", true);
     
     static{
         log = Logger.getLogger(SystemInfoUtility.class);
         log.debug("Created SystemInfo, registered for "+REREAD_INTERVAL+" ticks");
-        TimerServiceFactory.createTimerService().addConsumer(new SystemInfoUtility(), REREAD_INTERVAL);
-        systemInfo = readSystemInfo();
-    }
-    
-    /* (non-Javadoc)
-     * @see de.friendscout.vincent.services.timer.ITimerConsumer#receiveTimerEvent(int)
-     */
-    public void receiveTimerEvent(int arg0) {
-        //create a new systeminfo object.
-        SystemInfo info = readSystemInfo();
-        systemInfo = info;
+        timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+		        systemInfo = readSystemInfo();
+			}
+		}, 0, REREAD_INTERVAL);
     }
     
     private static SystemInfo readSystemInfo(){
         SystemInfo info = new SystemInfo();
         fillLoadAverage(info);
         fillMemInfo(info);
-        //System.out.println("read systeminfo: "+info);
+        System.out.println("read systeminfo: "+info);
         return info;
     }
  
@@ -127,28 +122,3 @@ public class SystemInfoUtility implements ITimerConsumer{
     }
 
 }
-
-/* ------------------------------------------------------------------------- *
- * $Log: SystemInfoUtility.java,v $
- * Revision 1.4  2007/02/25 23:13:18  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.3  2006/10/29 21:13:30  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.2  2006/01/15 18:49:41  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.1  2005/05/04 16:17:18  lro
- * *** empty log message ***
- *
- * Revision 1.3  2005/02/08 16:40:24  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.2  2005/02/07 16:52:23  lrosenberg
- * *** empty log message ***
- *
- * Revision 1.1  2005/02/07 16:43:33  lrosenberg
- * action stats now shows load average and mem usage
- *
- */
