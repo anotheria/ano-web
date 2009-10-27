@@ -9,6 +9,7 @@ package net.anotheria.webutils.filehandling.actions;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -71,15 +72,22 @@ public class FileStorage {
 	}
 	
 	public static void storeFilePermanently(HttpServletRequest req, String name){
+		FileOutputStream fOut = null;
 		try{
 			TemporaryFileHolder storage = getTemporaryFile(req);
-			FileOutputStream fOut = new FileOutputStream(fileStorageDir+"/"+name);
+			 fOut = new FileOutputStream(fileStorageDir+"/"+name);
 			System.out.println("trying to store: "+fileStorageDir+"/"+name);
 			fOut.write(storage.getData());
-			fOut.close(); 
 		}catch(Exception e){
 			log.error("storeFilePermanently", e);
 			throw new RuntimeException("FileStorageFailed: "+e.getMessage());
+		}finally{
+			if(fOut != null)
+				try {
+					fOut.close();
+				} catch (IOException ignored) {
+					//Can't do anything
+				}
 		}
 	}
 	
@@ -88,12 +96,13 @@ public class FileStorage {
 	}
 
 	public static TemporaryFileHolder loadFile(String name){
+		File file = null;
+		FileInputStream fIn = null;
 		try{
-			File file = new File(fileStorageDir+"/"+name);
-			FileInputStream fIn = new FileInputStream(file);
+			file = new File(fileStorageDir+"/"+name);
+			fIn = new FileInputStream(file);
 			byte[] data = new byte[fIn.available()];
 			fIn.read(data); 
-			fIn.close();
 			TemporaryFileHolder f = new TemporaryFileHolder();
 			f.setData(data);
 			f.setFileName(name);
@@ -101,6 +110,14 @@ public class FileStorage {
 			return f;
 		}catch(Exception e){
 			log.error("getImage", e);
+		}finally{
+			if(fIn != null){
+				try {
+					fIn.close();
+				} catch (IOException ignored) {
+					//Can't do anything
+				}
+			}
 		}
 		return null;
 	}
