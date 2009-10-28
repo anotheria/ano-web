@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.anotheria.util.IOUtils;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.jdom.Document;
@@ -66,21 +68,21 @@ public class XMLUserManager {
 	
 	private static void init(InputStream stream){
 		log.debug("initing from stream: "+stream);
-		if (inited){
-			try{
-				stream.close();
-			}catch(IOException ignored){}
-			return ;
-		}
-		users = new ConcurrentHashMap<String, XMLUser>();
-		try{		
-			byte data[] = new byte[stream.available()];
-			stream.read(data);
-			log.debug("file read "+data.length+" bytes.");
-			parseUsers(new String(data));
-			inited = true;
-		}catch(IOException e){
-			log.error("init", e);
+		try{
+			if (inited)
+				return ;
+			users = new ConcurrentHashMap<String, XMLUser>();
+			try{		
+				byte data[] = new byte[stream.available()];
+				stream.read(data);
+				log.debug("file read "+data.length+" bytes.");
+				parseUsers(new String(data));
+				inited = true;
+			}catch(IOException e){
+				log.error("init", e);
+			}
+		}finally{
+			IOUtils.closeIgnoringException(stream);
 		}
 	}
 

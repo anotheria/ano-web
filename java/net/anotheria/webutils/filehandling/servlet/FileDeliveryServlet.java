@@ -11,11 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.actions.FileStorage;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.util.DownloadMeter;
 
 public class FileDeliveryServlet extends HttpServlet{
+	
+	/**
+	 * Generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -6861040663569404495L;
 	
 	private static Logger log = Logger.getLogger(FileDeliveryServlet.class);
 	
@@ -47,10 +53,14 @@ public class FileDeliveryServlet extends HttpServlet{
 		if (h.getLastModified()!=0)
 			res.setHeader("Last-Modified", new Date(h.getLastModified()).toGMTString());
 		
-		BufferedOutputStream bOut = new BufferedOutputStream(res.getOutputStream(), 8192);
-		bOut.write(data);
-		bOut.flush();
-		bOut.close();
+		BufferedOutputStream bOut = null;
+		try{
+			bOut = new BufferedOutputStream(res.getOutputStream(), 8192);
+			bOut.write(data);
+			bOut.flush();
+		}finally{
+			IOUtils.closeIgnoringException(bOut);
+		}
 
 		if (data!=null)
 			DownloadMeter.addDownload(data.length);

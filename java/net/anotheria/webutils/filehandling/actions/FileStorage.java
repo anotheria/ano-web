@@ -9,10 +9,10 @@ package net.anotheria.webutils.filehandling.actions;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 
 import org.apache.log4j.Logger;
@@ -82,12 +82,7 @@ public class FileStorage {
 			log.error("storeFilePermanently", e);
 			throw new RuntimeException("FileStorageFailed: "+e.getMessage());
 		}finally{
-			if(fOut != null)
-				try {
-					fOut.close();
-				} catch (IOException ignored) {
-					//Can't do anything
-				}
+			IOUtils.closeIgnoringException(fOut);
 		}
 	}
 	
@@ -111,13 +106,7 @@ public class FileStorage {
 		}catch(Exception e){
 			log.error("getImage", e);
 		}finally{
-			if(fIn != null){
-				try {
-					fIn.close();
-				} catch (IOException ignored) {
-					//Can't do anything
-				}
-			}
+			IOUtils.closeIgnoringException(fIn);
 		}
 		return null;
 	}

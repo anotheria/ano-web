@@ -3,10 +3,12 @@ package net.anotheria.webutils.filehandling.actions;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 
@@ -83,7 +85,14 @@ public class UploadFile extends BaseFileHandlingAction{
 			byte[] data = new byte[(int)file.length()];
 			
 			log.debug("file laenge: " + data.length);
-			new FileInputStream(file).read(data);
+			InputStream fIn = null;
+			
+			try{
+				fIn = new FileInputStream(file);
+				fIn.read(data);
+			}finally{
+				IOUtils.closeIgnoringException(fIn);
+			}
 			
 			//hier ein temporaeres file speichern
 			TemporaryFileHolder fileHolder = new TemporaryFileHolder();
