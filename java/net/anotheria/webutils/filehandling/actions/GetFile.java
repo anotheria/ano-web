@@ -44,6 +44,7 @@ public class GetFile extends BaseFileHandlingAction{
 		if(h == null){
 //			throw new RuntimeException("Could not load file with name '" + name + "'!");
 			log.warn("Could not load file with name '" + name + "'!");
+			return null;
 		}
 		byte data[] = h.getData();
 		
