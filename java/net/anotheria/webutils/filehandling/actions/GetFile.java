@@ -41,8 +41,10 @@ public class GetFile extends BaseFileHandlingAction{
 			throw new RuntimeException("Not allowed!");
 
 		TemporaryFileHolder h = FileStorage.loadFile(name);
-		if(h == null)
-			throw new RuntimeException("Could not load file with name '" + name + "'!");
+		if(h == null){
+//			throw new RuntimeException("Could not load file with name '" + name + "'!");
+			log.warn("Could not load file with name '" + name + "'!");
+		}
 		byte data[] = h.getData();
 		
 		String mimeType = h.getMimeType(); 

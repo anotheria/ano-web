@@ -59,6 +59,7 @@ public class FileDeliveryServlet extends HttpServlet{
 			bOut.write(data);
 			bOut.flush();
 		}finally{
+			//BufferedOutputStream executes cascading closing and in this case leads to res output stream closing as well that is probably not necessary.
 			IOUtils.closeIgnoringException(bOut);
 		}
 
