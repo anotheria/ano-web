@@ -28,19 +28,19 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     		
     		initOverlay: function (){
     			try{
-    			var containerEl = document.createElement('div');
-    			containerEl.setAttribute('id',"ano-" + DOM.generateId());
-    			DOM.setStyle(containerEl,"position","absolute");
-    			DOM.insertAfter(containerEl,this.inputElement);
-    			var region = DOM.getRegion(this.inputElement);
-    			DOM.setX(containerEl,region.left);
-    			DOM.setY(containerEl,region.bottom);
-    			this.containerElement = containerEl;
-    			
-    			this.overlay = new YAHOO.widget.Overlay(containerEl, { visible:false} );
-    			this.overlay.setBody("&#32;");
-    			this.overlay.body.id = DOM.generateId();
-    			this.overlay.render();
+	    			var containerEl = document.createElement('div');
+	    			containerEl.setAttribute('id',"ano-" + DOM.generateId());
+	    			DOM.setStyle(containerEl,"position","absolute");
+	    			DOM.insertAfter(containerEl,this.inputElement);
+	    			var region = DOM.getRegion(this.inputElement);
+	    			DOM.setX(containerEl,region.left);
+	    			DOM.setY(containerEl,region.bottom);
+	    			this.containerElement = containerEl;
+	    			
+	    			this.overlay = new YAHOO.widget.Overlay(containerEl, { visible:false} );
+	    			this.overlay.setBody("&#32;");
+	    			this.overlay.body.id = DOM.generateId();
+	    			this.overlay.render();
     			}catch(e){
     				alert("overlay: " + e);
     			}
@@ -48,18 +48,18 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     		
 			initCalendar: function () {
     			try{
-    			this.calendar = new YAHOO.widget.Calendar(this.overlay.body.id,{navigator:true});
-				this.calendar.render();
-		
-				this.calendar.selectEvent.subscribe(function (p_sType, p_aArgs) {
-					var aDate;
-					if (p_aArgs) {
-						aDate = p_aArgs[0][0];
-						this.inputElement.value = aDate[0] + "-" + aDate[1] + "-" + aDate[2];
-						this.inputElement.focus();
-					}
-					this.hide();
-				},this,true);
+	    			this.calendar = new YAHOO.widget.Calendar(this.overlay.body.id,{navigator:true});
+					this.calendar.render();
+			
+					this.calendar.selectEvent.subscribe(function (p_sType, p_aArgs) {
+						var aDate;
+						if (p_aArgs) {
+							aDate = p_aArgs[0][0];
+							this.inputElement.value = aDate[0] + "-" + aDate[1] + "-" + aDate[2];
+							this.inputElement.focus();
+						}
+						this.hide();
+					},this,true);
     			}catch(e){
     				alert("calendar: " + e);
     			}
