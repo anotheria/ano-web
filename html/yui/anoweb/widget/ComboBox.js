@@ -77,9 +77,9 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     			Event.addListener(this._element, "click", panel.toggle, panel, true);
 		    	Event.addListener(document,'mousedown',function(e){
 		    		var target = Event.getTarget(e);
-		    		//alert('Event Mousedown: showed ' + this.showed + ", ancestor " + DOM.isAncestor(this.overlay.element,target));
-		    		if(this._dropdownPanel.visible && !Dom.isAncestor(this._container))
-		    			this._dropdownPanel.hide();
+		    		if(!this._dropdownPanel.visible || Dom.isAncestor(this._container,target) || Dom.isAncestor(this._element,target) || this._element === target)
+		    			return;
+		    		this._dropdownPanel.hide();
 				},this,true);
 
     		},
