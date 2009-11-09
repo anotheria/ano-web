@@ -92,7 +92,7 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     		    dataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
     		    dataSource.connXhrMode = "queueRequests";
     		    dataSource.responseSchema = {
-    		    		resultsList: "subcategories",
+    		    		resultsList: "items",
     		    		fields: ["name","id"]
     		    };
     		    this._dataSource = dataSource;
