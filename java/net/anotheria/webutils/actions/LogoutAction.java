@@ -13,9 +13,9 @@ public class LogoutAction extends AccessControlAction{
 	public ActionForward doExecute(ActionMapping mapping, ActionForm af, HttpServletRequest req, HttpServletResponse res) throws Exception {
 		removeBeanFromSession(req, BEAN_USER_ID);
 		res.addCookie(createAuthCookie(req, "CAFE", "BABE"));
-		res.sendRedirect(req.getContextPath());
-		return null;
-		//return mapping.findForward("success");
+		// res.sendRedirect(req.getContextPath());
+		// return null;
+		return mapping.findForward("success");
 	}
 
 }
