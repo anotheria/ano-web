@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="lib/jdom.jar"/>
 	<classpathentry kind="lib" path="lib/struts.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/moskito-core.jar"/>
 	<classpathentry kind="lib" path="lib/moskito-web.jar"/>
 	<classpathentry kind="lib" path="lib/BlowfishJ.jar"/>
 	<classpathentry kind="lib" path="lib/configureme.jar"/>
@@ -15,5 +14,6 @@
 	<classpathentry kind="lib" path="lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="lib/log4j.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/moskito-core"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
