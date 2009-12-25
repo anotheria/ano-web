@@ -5,9 +5,9 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 	};
 	var HidableEditor = YAHOO.anoweb.widget.HidableEditor;
 	
-	HidableEditor.prototype.hidden = false;
+	HidableEditor.prototype.turnedOff = false;
 	
-	HidableEditor.prototype.hideEditor = function(){
+	HidableEditor.prototype.turnOff = function(){
 		this.saveHTML();				
 	
 		var fc = this.get('element').previousSibling,
@@ -21,9 +21,9 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		Dom.setStyle(el, 'top', '');
 		Dom.setStyle(el, 'left', '');
 		Dom.setStyle(el, 'position', 'static');
-		this.hidden = true;
+		this.turnedOff = true;
 	};
-	HidableEditor.prototype.showEditor = function(){
+	HidableEditor.prototype.turnOn = function(){
 		var fc = this.get('element').previousSibling,
 		el = this.get('element');
 	
@@ -37,18 +37,26 @@ YAHOO.namespace('YAHOO.anoweb.widget');
 		this.get('element_cont').addClass('yui-editor-container');
 		this._setDesignMode('on');
 		this.setEditorHTML(this.get('textarea').value);
-		this.hidden = false;
+		this.turnedOff = false;
 	}
 	
-	HidableEditor.prototype.isHidden = function(){
-		return this.hidden;
+	HidableEditor.prototype.isTurnedOff = function(){
+		return this.turnedOff;
+	}
+
+	HidableEditor.prototype.toggle = function(){
+		if(this.isTurnedOff())
+			this.turnOn();
+		else
+			this.turnOff();
 	}
 	
-	HidableEditor.prototype.saveHtmlIfShowed = function(){
-		if(!this.hidden)
-			this.saveHTML();
-			
-	}
+	
+//	HidableEditor.prototype.saveHtmlIfShowed = function(){
+//		if(!this.turnedOff)
+//			this.saveHTML();
+//			
+//	}
 	
 	YAHOO.lang.augment(YAHOO.widget.Editor, HidableEditor);
 })();

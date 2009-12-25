@@ -25,26 +25,29 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     		_autocompleteContainer: null,
     		_autocompleteInput: null,
     	    _autocomplete: null,
+    	    _changeEvent: null,
     		
     	    init: function(){
 		        this._element.name = this._element.getAttribute("name");
     			var elInput = document.createElement("input");
-		        elInput.id =  this._element.name + "Input";
+		        elInput.id =  this._element.id + "Input";
 		        elInput.name = this._element.name;
 		        elInput.type = "hidden";
 		        this._elementInput = this._element.appendChild(elInput);
 		        
 		        var elText = document.createElement("span");
-		        elText.id =  this._element.name + "Text";
+		        elText.id =  this._element.id + "Text";
 		        this._elementText = this._element.appendChild(elText);
 		        
     			this._initDropdownPanel();
     			this._initDataSource();
     			this._initAutocomplete();
     			
+    			this._changeEvent = new YAHOO.util.CustomEvent("change", this._element);
     			if(this._selected){
-    				this.setSelection(this._selected);
+    				this.setSelection(this._selected, true);
     			}
+    			
     		},
     		
     		_initDropdownPanel: function(){
@@ -52,12 +55,12 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     			this._dropdownPanel = panel;
     			panel.setHeader('');
     			
-    			var name = this._element.name;
-    			panel.setBody('<div id="'+name+'Panel" class="dropdownContainer"><div class="searchBox"><input id="'+name+'ACInput" type="text"><span>Search</span></div><div id="'+name+'ACContainer"></div></div>');
+    			var id = this._element.id;
+    			panel.setBody('<div id="'+id+'Panel" class="dropdownContainer"><div class="searchBox"><input id="'+id+'ACInput" type="text"><span>Search</span></div><div id="'+id+'ACContainer"></div></div>');
     			panel.render();
     			
-    			this._autocompleteContainer = Dom.get(name+'ACContainer');
-    			this._autocompleteInput = Dom.get(name+'ACInput');
+    			this._autocompleteContainer = Dom.get(id+'ACContainer');
+    			this._autocompleteInput = Dom.get(id+'ACInput');
     			
     			panel.visible = false;
     			panel.hideEvent.subscribe(function(){
@@ -128,12 +131,31 @@ YAHOO.namespace('YAHOO.anoweb.widget');
     		    		    
     		    autocomplete.sendQuery("");
     		},
+
+    		getSelection: function(selection){
+//	        	return {id:this._selection.id,name:this._selection.name};
+    			return this._selection;
+    		},
     		
-    		setSelection: function(selection){
+    		setSelection: function(selection, silently){
     			this._elementInput.value = selection.id;
 	        	this._elementText.innerHTML = selection.name;
 	        	this._selection = selection;
-    		}
+	        	if(!silently)
+	        		this._fireChange();
+    		},
+    		
+    		getInputElement: function(){
+    			return this._elementInput;
+    		},
+    		
+    		_fireChange: function(){
+    			this._changeEvent.fire();
+			},
+    		
+			onChange: function(fn, obj){
+				this._changeEvent.subscribe(fn, obj); 
+			}
     }
     
 })();
