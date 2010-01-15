@@ -17,8 +17,9 @@ import java.security.Principal;
  * @author: h3llka
  */
 public class AbstractHttpServletRequest implements HttpServletRequest {
+	private String servletPath;
 
-    @Override
+	@Override
 	public String getLocalAddr() {
 		// TODO Auto-generated method stub
 		return null;
@@ -259,10 +260,14 @@ public class AbstractHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getServletPath() {
-        throw new UnsupportedOperationException("Implement me please!");
+        return servletPath;
     }
 
-    @Override
+	public void setServletPath(String servletPath) {
+		this.servletPath = servletPath;
+	}
+
+	@Override
     public HttpSession getSession(boolean b) {
         throw new UnsupportedOperationException("Implement me please!");
     }
