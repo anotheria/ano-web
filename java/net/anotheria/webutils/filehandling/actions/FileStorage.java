@@ -14,12 +14,6 @@ import org.configureme.ConfigurationManager;
 import org.configureme.annotations.ConfigureMe;
 import org.configureme.annotations.Set;
 
-/**
- * @author another
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
 public class FileStorage {
 	
 	static Logger log;
