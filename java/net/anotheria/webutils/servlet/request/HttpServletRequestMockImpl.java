@@ -37,6 +37,10 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 	 * Represents server port. Default value 80
 	 */
 	private int serverPort = 80;
+	/**
+	 * Dummy ip address for getRemoteAddr.
+	 */
+	private String ipAddress = "127.0.0.1";
 
 	/**
 	 * Default Constructor
@@ -160,5 +164,17 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 	protected void addParameter(String key, String value) {
 		if (key != null)
 			this.paramMap.put(key, value);
+	}
+	
+	@Override public String getRemoteAddr(){
+		return getIpAddress();
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
 	}
 }
