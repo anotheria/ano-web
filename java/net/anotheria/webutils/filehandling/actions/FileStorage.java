@@ -92,7 +92,7 @@ public class FileStorage {
 			f.setLastModified(file.lastModified());
 			return f;
 		}catch(Exception e){
-			log.error("getImage", e);
+			log.error("getImage : " + fileStorageDir + "/" + name, e);
 		}finally{
 			IOUtils.closeIgnoringException(fIn);
 		}
