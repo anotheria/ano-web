@@ -1,40 +1,41 @@
 package net.anotheria.webutils.servlet.request;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.HttpSession;
-
 /**
+ * HttpServletRequest mocked implementation - for tests.
+ *
  * @author: h3llka
  */
 public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 
 	/**
-	 * Represents attribute Map - for current Request
+	 * Represents attribute Map - for current Request.
 	 */
 	private Map<String, Object> attributeMap;
 	/**
-	 * Represents parameters Map - for current Request
+	 * Represents parameters Map - for current Request.
 	 */
 	private Map<String, String> paramMap;
 	/**
-	 * Represents ContextPath
+	 * Represents ContextPath.
 	 */
 	private String contextPath;
 
 	/**
-	 * Represent Locale for current Request. Default Locale.ENGLISH
+	 * Represent Locale for current Request. Default Locale.ENGLISH.
 	 */
 	private Locale currentLocale = Locale.ENGLISH;
 	/**
-	 * Represents serverName
+	 * Represents serverName.
 	 */
 	private String serverName;
 	/**
-	 * Represents server port. Default value 80
+	 * Represents server port. Default value 80.
 	 */
 	private int serverPort = 80;
 	/**
@@ -42,8 +43,14 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 	 */
 	private String ipAddress = "127.0.0.1";
 
+
 	/**
-	 * Default Constructor
+	 * Session instance.
+	 */
+	private HttpSession session;
+
+	/**
+	 * Default Constructor.
 	 */
 	public HttpServletRequestMockImpl() {
 		super();
@@ -52,16 +59,12 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 	}
 
 	/**
-	 * Constructor itself
-	 * 
-	 * @param cOntextPath
-	 *            String context path
-	 * @param sErverName
-	 *            String server name
-	 * @param loc
-	 *            locale which should be used
-	 * @param pOrt
-	 *            int serverPort
+	 * Constructor itself.
+	 *
+	 * @param cOntextPath String context path
+	 * @param sErverName  String server name
+	 * @param loc		 locale which should be used
+	 * @param pOrt		int serverPort
 	 */
 	protected HttpServletRequestMockImpl(String cOntextPath, String sErverName, Locale loc, int pOrt) {
 		this();
@@ -72,7 +75,7 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 		this.currentLocale = loc;
 		this.serverPort = pOrt;
 	}
-	
+
 	@Override
 	public Locale getLocale() {
 		return this.currentLocale;
@@ -154,19 +157,18 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 	}
 
 	/**
-	 * Allows adding parameters to the params map
-	 * 
-	 * @param key
-	 *            key
-	 * @param value
-	 *            value
+	 * Allows adding parameters to the params map.
+	 *
+	 * @param key   key
+	 * @param value value
 	 */
 	protected void addParameter(String key, String value) {
 		if (key != null)
 			this.paramMap.put(key, value);
 	}
-	
-	@Override public String getRemoteAddr(){
+
+	@Override
+	public String getRemoteAddr() {
 		return getIpAddress();
 	}
 
@@ -176,5 +178,15 @@ public class HttpServletRequestMockImpl extends AbstractHttpServletRequest {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	@Override
+	public HttpSession getSession() {
+		return session;
+	}
+
+	@Override
+	public void setSession(HttpSession httpSession) {
+		this.session = httpSession;
 	}
 }
