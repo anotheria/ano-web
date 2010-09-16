@@ -2,6 +2,8 @@ package net.anotheria.webutils.actions;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,11 +14,12 @@ import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.Date;
+import net.anotheria.util.mapper.ValueObjectMapperUtil;
 import net.anotheria.webutils.bean.ErrorPageBean;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.util.MessageResources;
-import org.apache.struts.util.MessageResourcesFactory;
+
+
 
 
 /**
@@ -26,16 +29,11 @@ public abstract class BaseMafAction implements Action {
 
 	protected Logger log;
 
-	private static MessageResources res;
 
 	protected static final String BEAN_USER_ID = "currentUserId";
 	protected static final String BEAN_TARGET_ACTION = "anoDocTargetAction";
 
 	public static final String PARAM_ID = "pId";
-
-	static {
-		res = MessageResourcesFactory.createFactory().createResources("ApplicationResources");
-	}
 
 	/**
 	 * Constants for month names.
@@ -74,7 +72,7 @@ public abstract class BaseMafAction implements Action {
 	protected void addBeanToRequest(HttpServletRequest request, String key, Object value) {
 		addBean(request, PageContext.REQUEST_SCOPE, key, value);
 	}
-
+	
 	protected Object getBeanFromSession(HttpServletRequest request, String key) {
 		return getBean(request, PageContext.SESSION_SCOPE, key);
 	}
@@ -97,6 +95,16 @@ public abstract class BaseMafAction implements Action {
 
 	protected void removeBeanFromRequest(HttpServletRequest request, String key) {
 		removeBean(request, PageContext.REQUEST_SCOPE, key);
+	}
+	
+	protected void populateFormBean(HttpServletRequest req, FormBean formBean){
+		//TODO: Each parameter in request is stores as string array. This Hack converts multivalue (e.g. checkboxes) parameters to single value.
+		Map<String, String> parametersMap = new HashMap<String, String>();
+		for (Object key : req.getParameterMap().keySet()) {
+            String reqKey = String.valueOf(key);
+            parametersMap.put(reqKey, req.getParameter(reqKey));
+        }
+		ValueObjectMapperUtil.map(parametersMap, formBean);
 	}
 
 	protected void addBean(HttpServletRequest request, int scope, String key, Object value) {
@@ -156,9 +164,6 @@ public abstract class BaseMafAction implements Action {
 		}
 	}
 
-	public static MessageResources getMainResources() {
-		return res;
-	}
 
 	protected static String getStringParameter(HttpServletRequest request, String name) {
 		String s = request.getParameter(name);
@@ -270,9 +275,6 @@ public abstract class BaseMafAction implements Action {
 		return "" + size + " " + bytes;
 	}
 
-	protected MessageResources getDefaultResources() {
-		return res;
-	}
 
 	protected String throwableToStrackTrace(Throwable t) {
 		StringWriter s = new StringWriter();

@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="src" path="test/junit"/>
-	<classpathentry kind="lib" path="lib/ano-util.jar"/>
+	<classpathentry kind="lib" path="lib/ano-util.jar" sourcepath="/ano-util"/>
 	<classpathentry kind="lib" path="lib/cos.jar"/>
 	<classpathentry kind="lib" path="lib/jdom.jar"/>
 	<classpathentry kind="lib" path="lib/struts.jar"/>
@@ -17,6 +17,6 @@
 	<classpathentry kind="lib" path="lib/json.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/moskito-core.jar"/>
-	<classpathentry kind="lib" path="lib/ano-maf.jar"/>
+	<classpathentry kind="lib" path="lib/ano-maf.jar" sourcepath="/ano-maf"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
