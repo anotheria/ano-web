@@ -77,16 +77,21 @@ public class LoginMafAction extends AccessControlMafAction{
 	
 	
 	private String getRedirectTarget(HttpServletRequest req){
+		String authParam = "auth=true";
 		String redT = (String)req.getSession().getAttribute(BEAN_TARGET_ACTION);
-		if (redT==null)
-			redT = req.getContextPath();
+		if (redT==null){
+			String servletPath = req.getServletPath();
+			servletPath = servletPath.substring(0, servletPath.lastIndexOf('/'));
+			return req.getContextPath() + servletPath + "/index?" + authParam;
+		}
+		
 		if (!(redT.startsWith("/")))
 			redT = "/"+redT;
 		if (redT.indexOf('?')==-1)
 			redT += "?";
 		else
 			redT += "&";
-		redT += "auth=true";
+		redT += authParam;
 		return redT;
 	}
 
