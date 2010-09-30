@@ -16,7 +16,7 @@ public class TimestampedLink extends BaseBodyTagSupport{
 			'?':'&';
 		body += param+"ts"+"="+System.currentTimeMillis();
 		write(body);
-		return EVAL_BODY_TAG;
+		return EVAL_BODY_AGAIN;
 	}
 
 }

@@ -13,6 +13,10 @@ import net.anotheria.util.sorter.IComparable;
  * Created on 16.06.2004
  */
 public class LabelValueBean implements IComparable, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String label;
 	private String value;
 	
