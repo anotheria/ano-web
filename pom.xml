@@ -3,7 +3,7 @@
   <parent>
 	<groupId>net.anotheria</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.1</version>
+	<version>1.4</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -16,35 +16,35 @@
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-util</artifactId>
-		<version>RELEASE</version>
+		<version>1.0.0</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>ano-maf</artifactId>
-		<version>RELEASE</version>
+		<version>1.0.0</version>
 	</dependency>
 
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>moskito-core</artifactId>
-		<version>RELEASE</version>
+		<version>1.0.0</version>
 	</dependency>
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>moskito-web</artifactId>
-		<version>RELEASE</version>
+		<version>1.0.0</version>
 	</dependency>
 
 	<dependency>
     	<groupId>javax.servlet</groupId>
     	<artifactId>servlet-api</artifactId>
-    	<version>2.5</version>
+    	<version>${servlet-api.version}</version>
     	<scope>provided</scope>
 	</dependency>	
 	<dependency>
     	<groupId>javax.servlet</groupId>
     	<artifactId>jsp-api</artifactId>
-    	<version>2.0</version>
+    	<version>${jsp-api.version}</version>
     	<scope>provided</scope>
 	</dependency>	
 	<dependency>
@@ -55,7 +55,7 @@
 	<dependency>
 	    <groupId>org.jdom</groupId>
 	    <artifactId>jdom</artifactId>
-	    <version>1.1</version>
+	    <version>${jdom.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>servlets.com</groupId>
