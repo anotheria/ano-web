@@ -32,7 +32,7 @@
 	<dependency>
 		<groupId>net.anotheria</groupId>
 		<artifactId>moskito-web</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</dependency>
 
 	<dependency>
@@ -42,7 +42,7 @@
     	<scope>provided</scope>
 	</dependency>	
 	<dependency>
-    	<groupId>javax.servlet</groupId>
+    	<groupId>javax.servlet.jsp</groupId>
     	<artifactId>jsp-api</artifactId>
     	<version>${jsp-api.version}</version>
     	<scope>provided</scope>
