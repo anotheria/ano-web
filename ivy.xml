@@ -23,6 +23,7 @@
         
         <dependency org="anotheria.net" name="ano-util" rev="latest" transitive="true" changing="true"/>
         <dependency org="anotheria.net" name="ano-maf" rev="latest" transitive="false" changing="true"/>
+        <dependency org="anotheria.net" name="ano-prise" rev="latest" transitive="true" changing="true"/>
 
     </dependencies>
 </ivy-module>

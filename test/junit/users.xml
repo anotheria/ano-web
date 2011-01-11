@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <users>
+  <!--  
+  	following roles exist and are supported:
+  		editor - has access to resources, content, variables and other pure textual stuff.
+   -->
+    <!--  Users for testing of roles:  -->
+    <user>
+      <username>testuser</username>
+      <password>testuser</password>
+      <roles>developer</roles>
+    </user>
+  </users>
