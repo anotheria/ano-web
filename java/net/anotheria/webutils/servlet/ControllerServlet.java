@@ -36,7 +36,7 @@ public class ControllerServlet extends ActionServlet {
 		super.init(config);
 
 		String path = config.getServletContext().getRealPath("WEB-INF");
-		File f = new File(path+"/appdata/"+"users.xml");
+		File f = new File(path+"/classes/"+"users.xml");
 		XMLUserManager.init(f);
 
 		if (log.isEnabledFor(Priority.INFO)) {
