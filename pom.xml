@@ -3,7 +3,7 @@
   <parent>
 	<groupId>net.anotheria</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.4</version>
+	<version>1.8</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -11,6 +11,15 @@
   <artifactId>ano-web</artifactId>
   <version>1.0.4-SNAPSHOT</version>
   <name>anotheria web utils</name>
+
+<build> 
+    <resources>
+      <resource>
+        <directory>${project.basedir}</directory>
+        <includes><include>html/**</include></includes>
+      </resource>
+	</resources>
+</build>
 
   <dependencies>
 	<dependency>
@@ -38,19 +47,16 @@
 	<dependency>
     	<groupId>javax.servlet</groupId>
     	<artifactId>servlet-api</artifactId>
-    	<version>${servlet-api.version}</version>
     	<scope>provided</scope>
 	</dependency>	
 	<dependency>
     	<groupId>javax.servlet.jsp</groupId>
     	<artifactId>jsp-api</artifactId>
-    	<version>${jsp-api.version}</version>
     	<scope>provided</scope>
 	</dependency>	
 	<dependency>
     	<groupId>struts</groupId>
     	<artifactId>struts</artifactId>
-    	<version>1.2.9</version>
 	</dependency>	
 	<dependency>
 	    <groupId>org.jdom</groupId>
