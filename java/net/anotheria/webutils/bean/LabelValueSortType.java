@@ -8,6 +8,10 @@ import net.anotheria.util.sorter.SortType;
  * Created on 23.06.2004
  */
 public class LabelValueSortType extends SortType{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int METHOD_VALUE = 1;
 	public static final int METHOD_LABEL = 2;
 	
