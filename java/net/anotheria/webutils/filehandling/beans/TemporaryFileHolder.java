@@ -10,6 +10,10 @@ import java.util.Map;
  */
 public class TemporaryFileHolder implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Map<String,String> extensionMapping;
 	
 	static{
