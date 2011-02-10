@@ -1,5 +1,7 @@
 package net.anotheria.webutils.actions;
 
+import java.io.File;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +28,8 @@ public class LoginMafAction extends AccessControlMafAction{
 	public LoginMafAction(){
 		manager = XMLUserManager.getInstance();
 	}
+	
+	
 	
 	public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{		
 		// // // First try to read auth from cookie.
@@ -93,6 +97,20 @@ public class LoginMafAction extends AccessControlMafAction{
 			redT += "&";
 		redT += authParam;
 		return redT;
+	}
+
+
+
+	@Override
+	public void preProcess(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
+		super.preProcess(mapping, req, res);
+		String path = req.getSession().getServletContext().getRealPath("WEB-INF");
+		File f = new File(path+"/classes/"+"users.xml");
+		//Double check for back compatibility
+		if(!f.exists())
+			f = new File(path+"/appdata/"+"users.xml");
+		
+		XMLUserManager.init(f);
 	}
 
 }
