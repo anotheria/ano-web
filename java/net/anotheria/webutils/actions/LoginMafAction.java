@@ -1,11 +1,8 @@
 package net.anotheria.webutils.actions;
 
-import java.io.File;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
@@ -99,18 +96,5 @@ public class LoginMafAction extends AccessControlMafAction{
 		return redT;
 	}
 
-
-
-	@Override
-	public void preProcess(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
-		super.preProcess(mapping, req, res);
-		String path = req.getSession().getServletContext().getRealPath("WEB-INF");
-		File f = new File(path+"/classes/"+"users.xml");
-		//Double check for back compatibility
-		if(!f.exists())
-			f = new File(path+"/appdata/"+"users.xml");
-		
-		XMLUserManager.init(f);
-	}
 
 }
