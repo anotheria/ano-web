@@ -30,9 +30,6 @@ public class UploadFileMaf extends BaseFileHandlingMafAction{
 	private static String FILE = "file";
 	
 	
-	/**
-	 * @see biz.beaglesoft.rb.gmw.shared.actions.BaseAction#doExecute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	public ActionForward execute(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		UploadFileBean fileBean = new UploadFileBean ();

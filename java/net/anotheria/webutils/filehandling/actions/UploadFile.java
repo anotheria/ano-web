@@ -30,10 +30,6 @@ public class UploadFile extends BaseFileHandlingAction{
 	private static String TEMP_DIR = "/tmp/";
 	private static String FILE = "file";
 	
-	
-	/**
-	 * @see biz.beaglesoft.rb.gmw.shared.actions.BaseAction#doExecute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	public ActionForward doExecute(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		UploadFileBean fileBean = new UploadFileBean ();
