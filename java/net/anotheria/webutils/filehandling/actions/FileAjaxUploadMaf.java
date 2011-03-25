@@ -1,7 +1,5 @@
 package net.anotheria.webutils.filehandling.actions;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -13,8 +11,6 @@ import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.IOUtils;
-import net.anotheria.webutils.filehandling.actions.BaseFileHandlingMafAction;
-import net.anotheria.webutils.filehandling.actions.IFilesConstants;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 
@@ -60,7 +56,7 @@ public class FileAjaxUploadMaf extends BaseFileHandlingMafAction{
 		try{	
 			log.debug("have the request...");
 			
-			String name = req.getHeader("X-File-Name");;
+			String name = req.getHeader("X-File-Name");
 			is = req.getInputStream();			
 			if(is==null)
 				throw new RuntimeException("Uploaded empty file!");
@@ -73,8 +69,11 @@ public class FileAjaxUploadMaf extends BaseFileHandlingMafAction{
 			fileHolder.setFileName(name);			
 			
 			//now store it
-			storeTemporaryFile(req, fileHolder);
-
+			String propertyName = req.getParameter("property");
+			if(propertyName == null)
+				storeTemporaryFile(req, fileHolder);
+			else
+				storeTemporaryFile(req, fileHolder, propertyName);
 			fileBean.setName(name);
 			fileBean.setSize(makeSizeString(data.length));
 			fileBean.setMessage("Erfolgreich gespeichert.");

@@ -36,10 +36,19 @@ public class FileStorage {
 	}
 	
 	/**
-	 * Stores a file temporarly in the session.
+	 * Stores a file temporarily in the session.
 	 */
 	public static void storeTemporaryFile(HttpServletRequest req, TemporaryFileHolder fileHolder){
 		req.getSession().setAttribute(IFilesConstants.BEAN_TMP_FILE, fileHolder);
+	}
+	
+	/**
+	 * Stores a file temporarily in the session under the specified key. 
+	 * Use of this method allows to store multiple temporary files in session.
+	 * @param key attribute suffix to use for storing in session
+	 */
+	public static void storeTemporaryFile(HttpServletRequest req, TemporaryFileHolder fileHolder, String key){
+		req.getSession().setAttribute(IFilesConstants.BEAN_TMP_FILE+"."+key, fileHolder);
 	}
 	
 	/**
@@ -52,6 +61,16 @@ public class FileStorage {
 	}
 	
 	/**
+	 * Returns the temporarly file from the session.
+	 * @param req HttpServletRequest to obtain the session from.
+	 * @param key attribute suffix that was used to store attribute in session
+	 * @return previously stored tmp file (if any).
+	 */
+	public static TemporaryFileHolder getTemporaryFile(HttpServletRequest req, String key){
+		return (TemporaryFileHolder)req.getSession().getAttribute(IFilesConstants.BEAN_TMP_FILE+"."+key);
+	}
+	
+	/**
 	 * Removes the temporary saved file from the session.
 	 * @param req servlet request.
 	 */
@@ -59,10 +78,23 @@ public class FileStorage {
 		req.getSession().removeAttribute(IFilesConstants.BEAN_TMP_FILE);
 	}
 	
+	/**
+	 * Removes the temporary saved file from the session.
+	 * @param req servlet request.
+	 * @param key attribute suffix
+	 */
+	public static void removeTemporaryFile(HttpServletRequest req, String key){
+		req.getSession().removeAttribute(IFilesConstants.BEAN_TMP_FILE+"."+key);
+	}
+	
 	public static void storeFilePermanently(HttpServletRequest req, String name){
+		storeFilePermanently(req, name, null);
+	}
+	
+	public static void storeFilePermanently(HttpServletRequest req, String name, String key){
 		FileOutputStream fOut = null;
 		try{
-			TemporaryFileHolder storage = getTemporaryFile(req);
+			TemporaryFileHolder storage = (key == null) ? getTemporaryFile(req) : getTemporaryFile(req, key);
 			 fOut = new FileOutputStream(fileStorageDir+"/"+name);
 			System.out.println("trying to store: "+fileStorageDir+"/"+name);
 			fOut.write(storage.getData());
