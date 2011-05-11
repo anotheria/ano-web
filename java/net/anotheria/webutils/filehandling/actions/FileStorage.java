@@ -124,7 +124,7 @@ public class FileStorage {
 			f.setLastModified(file.lastModified());
 			return f;
 		}catch(Exception e){
-			log.error("getImage", e);
+			log.warn("getImage", e);
 		}finally{
 			IOUtils.closeIgnoringException(fIn);
 		}
