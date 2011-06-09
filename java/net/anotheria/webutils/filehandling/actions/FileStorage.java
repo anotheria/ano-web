@@ -1,18 +1,19 @@
 package net.anotheria.webutils.filehandling.actions;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
-import javax.servlet.http.HttpServletRequest;
-
 import net.anotheria.util.IOUtils;
+import net.anotheria.util.IdCodeGenerator;
+import net.anotheria.util.StringUtils;
+import net.anotheria.util.io.CopyDirContents;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
-
 import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
 import org.configureme.annotations.ConfigureMe;
 import org.configureme.annotations.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class FileStorage {
 	
@@ -95,8 +96,8 @@ public class FileStorage {
 		FileOutputStream fOut = null;
 		try{
 			TemporaryFileHolder storage = (key == null) ? getTemporaryFile(req) : getTemporaryFile(req, key);
-			 fOut = new FileOutputStream(fileStorageDir+"/"+name);
-			System.out.println("trying to store: "+fileStorageDir+"/"+name);
+		 	fOut = new FileOutputStream(fileStorageDir + File.separator + name);
+			log.debug("trying to store(): " + fileStorageDir + File.separator + name);
 			fOut.write(storage.getData());
 		}catch(Exception e){
 			log.error("storeFilePermanently", e);
@@ -105,16 +106,63 @@ public class FileStorage {
 			IOUtils.closeIgnoringException(fOut);
 		}
 	}
+
+	/**
+	 * Makes copy of source file on file system, with new generated file name but same extension.
+	 *
+	 * @param fileName source file to clone
+	 * @return new file name
+	 */
+	public static String cloneFilePermanently(String fileName) {
+		if (StringUtils.isEmpty(fileName))
+			return "";
+
+		try {
+			File sourceFile = new File(fileStorageDir + File.separator + fileName);
+			File destinationFile = new File(fileStorageDir + File.separator + generateFileName(fileName));
+
+			if (sourceFile.exists())
+				CopyDirContents.copy(sourceFile, destinationFile);
+
+			return destinationFile.getName();
+		} catch (Exception e) {
+			log.error("cloneFilePermanently", e);
+			throw new RuntimeException("FileStorageFailed: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Removes file from file system.
+	 *
+	 * @param name file name to remove
+	 */
+	public static void removeFilePermanently(String name){
+		if (StringUtils.isEmpty(name))
+			return;
+		
+		try{
+			log.debug("trying to remove: " + fileStorageDir + File.separator + name);
+			File file = new File(fileStorageDir + File.separator + name);
+
+			file.delete();
+		}catch(Exception e){
+			log.error("removeFilePermanently()", e);
+			throw new RuntimeException("FileStorageFailed: "+e.getMessage());
+		}
+	}
 	
 	public static void loadTemporaryFile(HttpServletRequest req, String name){
 		storeTemporaryFile(req, loadFile(name));
 	}
 
 	public static TemporaryFileHolder loadFile(String name){
-		File file = null;
+		if (StringUtils.isEmpty(name))
+			return null;
+
+		File file;
 		FileInputStream fIn = null;
 		try{
-			file = new File(fileStorageDir+"/"+name);
+			file = new File(fileStorageDir + File.separator + name);
 			fIn = new FileInputStream(file);
 			byte[] data = new byte[fIn.available()];
 			fIn.read(data); 
@@ -124,13 +172,29 @@ public class FileStorage {
 			f.setLastModified(file.lastModified());
 			return f;
 		}catch(Exception e){
-			log.warn("getImage", e);
+			log.warn("loadFile()", e);
 		}finally{
 			IOUtils.closeIgnoringException(fIn);
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Generates file name and appends it with given file extension.
+	 *
+	 * @param fileName original file name
+	 * @return generated file name
+	 */
+	public static String generateFileName(String fileName){
+		String res = IdCodeGenerator.generateCode();
+		int index = fileName.lastIndexOf(".");
+
+		if (index >= 0)
+			res += fileName.substring(index);
+
+		return res;
+	}
+
 }
 
 @ConfigureMe(name="filestorage")

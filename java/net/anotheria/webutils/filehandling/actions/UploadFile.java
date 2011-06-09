@@ -1,13 +1,6 @@
 package net.anotheria.webutils.filehandling.actions;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.oreilly.servlet.MultipartRequest;
 import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
@@ -15,9 +8,12 @@ import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 
-
-
-import com.oreilly.servlet.MultipartRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Uploads a file and saves it to the session temporary.
@@ -78,17 +74,18 @@ public class UploadFile extends BaseFileHandlingAction{
 			}
 			
 			//hier ein temporaeres file speichern
+			String fileName = FileStorage.generateFileName(name);
+
 			TemporaryFileHolder fileHolder = new TemporaryFileHolder();
 			fileHolder.setData(data);
 			fileHolder.setMimeType(mpreq.getContentType(FILE));
-			fileHolder.setFileName(name);			
-			
+			fileHolder.setFileName(fileName);
 			//now store it
 			storeTemporaryFile(req, fileHolder);
 
 //			image.setHeight("32");
 //			image.setWidth("32");
-			fileBean.setName(name);
+			fileBean.setName(fileName);
 			fileBean.setSize(makeSizeString(data.length));
 			fileBean.setMessage("Erfolgreich gespeichert.");
 			fileBean.setFilePresent(true); 
@@ -105,4 +102,5 @@ public class UploadFile extends BaseFileHandlingAction{
 	private boolean validateFile(String filename, MultipartRequest req) {
 		return true;
 	}
+
 }

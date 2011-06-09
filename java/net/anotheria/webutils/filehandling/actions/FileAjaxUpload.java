@@ -1,18 +1,17 @@
 package net.anotheria.webutils.filehandling.actions;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
 /**
  * Uploads a file and saves it to the session temporary.
@@ -63,10 +62,12 @@ public class FileAjaxUpload extends BaseFileHandlingAction{
 			
 			
 			byte[] data = IOUtils.readBytes(is);
-			
+
+			String fileName = FileStorage.generateFileName(name);
+
 			TemporaryFileHolder fileHolder = new TemporaryFileHolder();
 			fileHolder.setData(data);
-			fileHolder.setFileName(name);			
+			fileHolder.setFileName(fileName);
 			
 			//now store it
 			String propertyName = req.getParameter("property");
@@ -74,7 +75,7 @@ public class FileAjaxUpload extends BaseFileHandlingAction{
 				storeTemporaryFile(req, fileHolder);
 			else
 				storeTemporaryFile(req, fileHolder, propertyName);
-			fileBean.setName(name);
+			fileBean.setName(fileName);
 			fileBean.setSize(makeSizeString(data.length));
 			fileBean.setMessage("Erfolgreich gespeichert.");
 			fileBean.setFilePresent(true); 

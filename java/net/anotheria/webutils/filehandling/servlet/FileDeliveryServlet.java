@@ -1,20 +1,19 @@
 package net.anotheria.webutils.filehandling.servlet;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.util.Date;
+import net.anotheria.util.IOUtils;
+import net.anotheria.util.StringUtils;
+import net.anotheria.webutils.filehandling.actions.FileStorage;
+import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
+import net.anotheria.webutils.util.DownloadMeter;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
-import net.anotheria.util.IOUtils;
-import net.anotheria.webutils.filehandling.actions.FileStorage;
-import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
-import net.anotheria.webutils.util.DownloadMeter;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.util.Date;
 
 public class FileDeliveryServlet extends HttpServlet{
 	
@@ -27,16 +26,7 @@ public class FileDeliveryServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String name = req.getPathInfo();
-		
-		if (name==null || name.length()==0)
-			throw new ServletException("No filename specified.");
-		
-		while (name.startsWith("/"))
-			name = name.substring(1);
-		
-		if (name!=null && name.startsWith("../"))
-			throw new ServletException("Not allowed!");
+		String name = getRequestedResourceName(req);
 
 		TemporaryFileHolder h = FileStorage.loadFile(name);
 		if (h==null){
@@ -81,4 +71,27 @@ public class FileDeliveryServlet extends HttpServlet{
 		System.out.println("doHead Called: "+req.getPathInfo());
 		super.doHead(req, res);
 	}
+
+
+	/**
+	 * Returns name of requested resource.
+	 *
+	 * @param req HttpServletRequest
+	 * @return name of resource
+	 */
+	protected String getRequestedResourceName(HttpServletRequest req) throws ServletException {
+		String name = req.getPathInfo();
+
+		if (StringUtils.isEmpty(name))
+			throw new ServletException("No filename specified.");
+
+		while (name.startsWith("/"))
+			name = name.substring(1);
+
+		if (name!=null && name.startsWith("../"))
+			throw new ServletException("Not allowed!");
+
+		return name;
+	}
+
 }
