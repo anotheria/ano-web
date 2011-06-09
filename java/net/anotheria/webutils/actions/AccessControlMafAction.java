@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.anotheria.util.crypt.CryptTool;
 
-public abstract class AccessControlMafAction extends BaseMafAction{
+public abstract class AccessControlMafAction extends BaseAction{
 	
 	public static final String COOKIE_PREFIX = "anoweb.auth.";
 	public static final char AUTH_DELIMITER = ':';

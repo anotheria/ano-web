@@ -17,7 +17,7 @@ import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 /**
  * Uploads a file and saves it to the session temporary.
  */
-public class FileAjaxUploadMaf extends BaseFileHandlingMafAction{
+public class FileAjaxUpload extends BaseFileHandlingAction{
 
 	public ActionForward execute(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res) throws Exception {
 

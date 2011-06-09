@@ -4,19 +4,17 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionMapping;
+import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.service.XMLUserManager;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 
 /**
  * 
  * @author another
  */
-public class LoginAction extends AccessControlAction{
+public class LoginAction extends AccessControlMafAction{
 	
 	public static final String P_USER_ID  = "pUserId";
 	public static final String P_PASSWORD = "pPassword";
@@ -28,29 +26,17 @@ public class LoginAction extends AccessControlAction{
 		manager = XMLUserManager.getInstance();
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.anotheria.webutils.actions.BaseAction#doExecute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
-	public ActionForward doExecute(
-		ActionMapping mapping,
-		ActionForm af,
-		HttpServletRequest req,
-		HttpServletResponse res)
-		throws Exception {
-		
-		
+	
+	
+	public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{		
 		// // // First try to read auth from cookie.
 		try{
 			String authString = null;
 			String cookieName = getAuthCookieName(req);
-			Cookie[] cookies = req.getCookies();
-			
-			if (cookies != null) {
-				for (Cookie c : req.getCookies()){
-					if (c!=null && c.getName().equals(cookieName)){
-						authString = getCryptTool().decryptFromHex(c.getValue()).trim();
-						break;
-					}
+			for (Cookie c : req.getCookies()){
+				if (c!=null && c.getName().equals(cookieName)){
+					authString = getCryptTool().decryptFromHex(c.getValue()).trim();
+					break;
 				}
 			}
 			
@@ -92,16 +78,23 @@ public class LoginAction extends AccessControlAction{
 	
 	
 	private String getRedirectTarget(HttpServletRequest req){
+		String authParam = "auth=true";
 		String redT = (String)req.getSession().getAttribute(BEAN_TARGET_ACTION);
-		if (redT==null)
-			redT = req.getContextPath();
+		if (redT==null){
+			String servletPath = req.getServletPath();
+			servletPath = servletPath.substring(0, servletPath.lastIndexOf('/'));
+			return req.getContextPath() + servletPath + "/index?" + authParam;
+		}
+		
 		if (!(redT.startsWith("/")))
 			redT = "/"+redT;
 		if (redT.indexOf('?')==-1)
 			redT += "?";
 		else
 			redT += "&";
-		redT += "auth=true";
+		redT += authParam;
 		return redT;
 	}
+
+
 }

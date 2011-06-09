@@ -3,12 +3,14 @@ package net.anotheria.webutils.filehandling.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionMapping;
+import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+
+
 
 /**
  * @author another
@@ -21,30 +23,25 @@ public class ShowFile extends BaseFileHandlingAction{
 	/* (non-Javadoc)
 	 * @see net.anotheria.webutils.actions.BaseAction#doExecute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
-	public ActionForward doExecute(
-		ActionMapping mapping,
-		ActionForm af,
-		HttpServletRequest req,
-		HttpServletResponse res)
-		throws Exception {
+	public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{
 		
-		UploadFileBean bean = new UploadFileBean();
+		UploadFileBean filebean = new UploadFileBean();
 
 		TemporaryFileHolder holder = getTemporaryFile(req);
 		if (holder==null){
-			bean.setName("Noch kein File.");
-			bean.setSize(makeSizeString(0));
-			bean.setMessage("Warte aufs File.");
-			bean.setFilePresent(false);
+			filebean.setName("Noch kein File.");
+			filebean.setSize(makeSizeString(0));
+			filebean.setMessage("Warte aufs File.");
+			filebean.setFilePresent(false);
 		}else{
-			bean.setName(holder.getFileName());
-			bean.setSize(makeSizeString(holder.getSize()));
-			bean.setMessage("File hochgeladen");
-			bean.setFilePresent(true);
+			filebean.setName(holder.getFileName());
+			filebean.setSize(makeSizeString(holder.getSize()));
+			filebean.setMessage("File hochgeladen");
+			filebean.setFilePresent(true);
 		}
 		
 		
-		addBeanToSession(req, IFilesConstants.BEAN_FILE, bean);
+		addBeanToSession(req, IFilesConstants.BEAN_FILE, filebean);
 		
 		return mapping.findForward("success");
 	}

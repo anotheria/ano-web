@@ -1,12 +1,12 @@
 package net.anotheria.webutils.bean;
 
-import org.apache.struts.action.ActionForm;
+import net.anotheria.maf.bean.FormBean;
 
 /**
  * TODO please remined another to comment this class
  * @author another
  */
-public abstract class BaseActionForm extends ActionForm{
+public abstract class BaseActionForm implements  FormBean{
 
 	/**
 	 * 

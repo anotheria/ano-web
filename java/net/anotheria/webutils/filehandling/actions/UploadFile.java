@@ -8,15 +8,14 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionMapping;
+import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 
-import org.apache.struts.action.ActionError;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+
 
 import com.oreilly.servlet.MultipartRequest;
 
@@ -30,20 +29,13 @@ public class UploadFile extends BaseFileHandlingAction{
 	private static String TEMP_DIR = "/tmp/";
 	private static String FILE = "file";
 	
-	public ActionForward doExecute(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
+	
+	public ActionForward execute(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		UploadFileBean fileBean = new UploadFileBean ();
-		ActionErrors err = null;
 
-		try{
-			err = upload(mapping,form,req,res,fileBean); 
-		} catch (IOException e) {
-			log.debug("upload",e);
-			res.sendError(1);
-			return null;
-		}
+		upload(mapping,form,req,res,fileBean); 
 		addBeanToSession(req, IFilesConstants.BEAN_FILE, fileBean);
-		addErrors(req, err);
 
 		return mapping.findForward("success");
 
@@ -59,8 +51,7 @@ public class UploadFile extends BaseFileHandlingAction{
 	 * @return
 	 * @throws IOException
 	 */	
-	private ActionErrors upload(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res, UploadFileBean fileBean) throws IOException{
-		ActionErrors err = new ActionErrors();
+	private void upload(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res, UploadFileBean fileBean) throws IOException{
 		log.debug("trying uploading file....");
 		MultipartRequest mpreq = new MultipartRequest(req, TEMP_DIR, MAX_FILE);
 				
@@ -68,13 +59,10 @@ public class UploadFile extends BaseFileHandlingAction{
 			log.debug("have the request...");
 			File file = mpreq.getFile(FILE);
 			String name = mpreq.getFilesystemName(FILE);
-			if(file==null){
-				err.add("ds.uploadbadge.error.upload",new ActionError("ds.uploadbadge.error.upload"));			
-				return err;
-			}
+			if(file==null)
+				throw new RuntimeException("Uploaded empty file!");
 			if(!validateFile(FILE,mpreq)){
-				err.add("ds.uploadbadge.error.mime",new ActionError("ds.uploadbadge.error.mime",name));		
-				return err;
+				throw new RuntimeException("Uploaded file is not valid!");
 			}
 			
 			byte[] data = new byte[(int)file.length()];
@@ -107,12 +95,10 @@ public class UploadFile extends BaseFileHandlingAction{
 //			image.setId(fileId);
 			
 			fileBean.setValid(true);
-			return err;
 
 		} catch(Exception ex){
-			log.error("upload",ex);
-			err.add("ds.error.system",new ActionError("ds.error.system"));		
-			return err;
+			log.error("Error while file upploading: ",ex);
+			throw new RuntimeException("Error while file upploading. Check logs for details!");
 		}
 	}
 
