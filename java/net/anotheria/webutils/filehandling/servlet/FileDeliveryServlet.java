@@ -46,8 +46,10 @@ public class FileDeliveryServlet extends HttpServlet{
 		BufferedOutputStream bOut = null;
 		try{
 			bOut = new BufferedOutputStream(res.getOutputStream(), 8192);
-			bOut.write(data);
-			bOut.flush();
+			if (data!=null){
+				bOut.write(data);
+				bOut.flush();
+			}
 		}finally{
 			//BufferedOutputStream executes cascading closing and in this case leads to res output stream closing as well that is probably not necessary.
 			IOUtils.closeIgnoringException(bOut);
