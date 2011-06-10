@@ -9,17 +9,10 @@ import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 
 
-
-
 /**
- * @author another
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * @author lrosenberg
  */
 public class GetFile extends BaseFileHandlingAction{
-	
-
 
 	/* (non-Javadoc)
 	 * @see net.anotheria.webutils.actions.BaseAction#doExecute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -47,10 +40,10 @@ public class GetFile extends BaseFileHandlingAction{
 		String mimeType = h.getMimeType(); 
 		if (mimeType!=null)
 			res.setContentType(mimeType);
-		if (data!=null)
+		if (data!=null){
 			res.setContentLength(data.length);
-		
-		res.getOutputStream().write(data);
+			res.getOutputStream().write(data);
+		}
 		res.getOutputStream().flush();
 
 		return null;
