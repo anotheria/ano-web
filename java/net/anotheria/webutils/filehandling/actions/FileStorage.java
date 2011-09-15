@@ -13,6 +13,7 @@ import org.configureme.annotations.Set;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 public class FileStorage {
@@ -85,7 +86,7 @@ public class FileStorage {
 	 * @param key attribute suffix
 	 */
 	public static void removeTemporaryFile(HttpServletRequest req, String key){
-		req.getSession().removeAttribute(IFilesConstants.BEAN_TMP_FILE+"."+key);
+		req.getSession().removeAttribute(IFilesConstants.BEAN_TMP_FILE + "." + key);
 	}
 	
 	public static void storeFilePermanently(HttpServletRequest req, String name){
@@ -177,6 +178,22 @@ public class FileStorage {
 			IOUtils.closeIgnoringException(fIn);
 		}
 		return null;
+	}
+
+	/**
+	 * Return {@link File} with selected  name if such exists.
+	 *
+	 * @param name file name
+	 * @return {@link File}
+	 * @throws java.io.FileNotFoundException if  file does not exists
+	 */
+	public static File getFile(String name) throws FileNotFoundException {
+		if (StringUtils.isEmpty(name))
+			return null;
+		File file = new File(fileStorageDir + File.separator + name);
+		if (file.exists() && !file.isDirectory())
+			return file;
+		throw new FileNotFoundException(name);
 	}
 
 	/**
