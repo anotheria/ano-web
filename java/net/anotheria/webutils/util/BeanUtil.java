@@ -5,6 +5,7 @@ import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
 
+@Deprecated
 public class BeanUtil {
 	
 	private static Logger logger;
