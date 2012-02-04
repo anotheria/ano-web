@@ -12,35 +12,38 @@ import net.anotheria.util.sorter.IComparable;
  * @author lrosenberg
  * Created on 16.06.2004
  */
-public class LabelValueBean implements IComparable, Serializable{
+public class LabelValueBean implements IComparable<LabelValueBean>, Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * The label.
+	 */
 	private String label;
+	/**
+	 * The value.
+	 */
 	private String value;
-	
+	/**
+	 * Creates a new label value bean.
+	 * @param aValue
+	 * @param aLabel
+	 */
 	public LabelValueBean(String aValue, String aLabel){
 		this.value = aValue;
 		this.label = aLabel;
 	}
 	
-
-	/**
-	 * @return
-	 */
 	public String getValue() {
 		return value;
 	}
 
-	/**
-	 * @param string
-	 */
 	public void setValue(String string) {
 		value = string;
 	}
 	
-	public String toString(){
+	@Override public String toString(){
 		return ""+value+"="+label;
 	}
 
@@ -54,20 +57,15 @@ public class LabelValueBean implements IComparable, Serializable{
 			case LabelValueSortType.METHOD_VALUE:
 				return BasicComparable.compareString(value, ((LabelValueBean)anotherComparable).value);
 			default:
-				throw new RuntimeException();
+				throw new IllegalArgumentException("Unsupported compare method "+method);
 		}
 	}
 	
 
-    /**
-     * @return Returns the label.
-     */
     public String getLabel() {
         return label;
     }
-    /**
-     * @param label The label to set.
-     */
+
     public void setLabel(String label) {
         this.label = label;
     }
