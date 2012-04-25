@@ -108,6 +108,10 @@ public class FileStorage {
 		}
 	}
 
+	private static boolean isFileExists(String name){
+		return new File(fileStorageDir + File.separator + name).exists();
+	}
+
 	/**
 	 * Makes copy of source file on file system, with new generated file name but same extension.
 	 *
@@ -203,16 +207,33 @@ public class FileStorage {
 	 * @return generated file name
 	 */
 	public static String generateFileName(String fileName){
-		String res = IdCodeGenerator.generateCode();
-		int index = fileName.lastIndexOf(".");
 
-		if (index >= 0)
-			res += fileName.substring(index);
+		int extIndex = fileName.lastIndexOf(".");
+		String filePrefix = fileName.substring(0, extIndex);
+		String ext = fileName.substring(extIndex);
 
-		return res;
+		for(int i = 1; isFileExists(fileName); i++)
+			fileName = filePrefix + i + ext;
+		
+		return fileName;
+		
+//		String res = IdCodeGenerator.generateCode();
+//		int index = fileName.lastIndexOf(".");
+//
+//		if (index >= 0)
+//			res += fileName.substring(index);
+//
+//		return res;
 	}
-
+	
+	public static void main(String[] args) {
+		System.out.println(isFileExists("test.txt"));
+		System.out.println(generateFileName("test.jpg"));
+		System.out.println(generateFileName("test.txt"));
+		System.out.println(generateFileName("test.1.txt"));
+	}
 }
+
 
 @ConfigureMe(name="filestorage")
 class FileStorageConfigurable{
