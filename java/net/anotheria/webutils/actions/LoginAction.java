@@ -1,13 +1,13 @@
 package net.anotheria.webutils.actions;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
 import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.service.XMLUserManager;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -28,7 +28,7 @@ public class LoginAction extends AccessControlMafAction{
 	
 	
 	
-	public ActionForward execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{		
+	public ActionCommand execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{
 		// // // First try to read auth from cookie.
 		try{
 			String authString = null;
@@ -69,7 +69,7 @@ public class LoginAction extends AccessControlMafAction{
 	 		
 			res.addCookie(createAuthCookie(req, userId, password));
 		}catch(Exception e){
-			return mapping.findForward("success");
+			return mapping.success();
 		}
 		addBeanToSession(req, BEAN_USER_ID, userId);
 		res.sendRedirect(getRedirectTarget(req));
