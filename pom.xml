@@ -50,7 +50,7 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
+<!--
 	<build>
 		<resources>
 			<resource>
@@ -61,7 +61,7 @@
 			</resource>
 		</resources>
 	</build>
-
+-->
 	<scm>
 		<url>svn:svn://svn.anotheria.net/opensource/ano-web/trunk</url>
 		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-web/trunk</connection>
