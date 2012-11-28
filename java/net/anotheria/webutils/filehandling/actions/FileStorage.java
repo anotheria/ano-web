@@ -221,23 +221,21 @@ public class FileStorage {
      * @return generated file name
      */
     public static String generateFileName(String fileName) {
-
         int extIndex = fileName.lastIndexOf(".");
+
         String filePrefix = fileName.substring(0, extIndex);
         String ext = fileName.substring(extIndex);
 
+        // substitute special characters with underscore
+        filePrefix = StringUtils.normalize(filePrefix);
+
+        fileName = filePrefix + ext;
+
+        // if file with such name already exist - append index
         for (int i = 1; isFileExists(fileName); i++)
             fileName = filePrefix + i + ext;
 
         return fileName;
-
-//		String res = IdCodeGenerator.generateCode();
-//		int index = fileName.lastIndexOf(".");
-//
-//		if (index >= 0)
-//			res += fileName.substring(index);
-//
-//		return res;
     }
 
     public static void main(String[] args) {
