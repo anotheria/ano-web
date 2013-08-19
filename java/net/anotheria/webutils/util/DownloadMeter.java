@@ -1,9 +1,11 @@
 package net.anotheria.webutils.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 
 
 public class DownloadMeter {
@@ -11,7 +13,7 @@ public class DownloadMeter {
 	private static List<DownloadEntity> entities = new ArrayList<DownloadEntity>();
 	private static final Object lock = new Object();
 	
-	private static Logger log = Logger.getLogger(DownloadMeter.class);
+	private static Logger log = LoggerFactory.getLogger(DownloadMeter.class);
 	
 	private static long overallbytes = 0L;
 	
@@ -95,7 +97,7 @@ class DownloadMeterCleanupThread extends Thread{
 	
 	public static final long SLEEP_INTERVAL = 1000L*60*15;
 	
-	private static Logger log = Logger.getLogger(DownloadMeter.class);
+	private static Logger log = LoggerFactory.getLogger(DownloadMeter.class);
 	
 	DownloadMeterCleanupThread() {
 		super("DownloadMeterCleanupThread");

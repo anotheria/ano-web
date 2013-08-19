@@ -1,14 +1,5 @@
 package net.anotheria.webutils.actions;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
-
 import net.anotheria.maf.action.Action;
 import net.anotheria.maf.action.ActionForward;
 import net.anotheria.maf.action.ActionMapping;
@@ -16,11 +7,16 @@ import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.Date;
 import net.anotheria.util.mapper.ValueObjectMapperUtil;
 import net.anotheria.webutils.bean.ErrorPageBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
-
-
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lrosenberg
@@ -41,7 +37,7 @@ public abstract class BaseAction implements Action {
 	public static final String MONTH[] = { "", "JAN", "FEB", "MAR", "APR", "MAI", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
 
 	protected BaseAction() {
-		log = Logger.getLogger(this.getClass());
+		log = LoggerFactory.getLogger(this.getClass());
 	}
 
 	protected ActionForward handleError(HttpServletRequest req, HttpServletResponse res, Exception e, ActionMapping mapping) {

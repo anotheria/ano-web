@@ -5,7 +5,8 @@ import net.anotheria.util.StringUtils;
 import net.anotheria.webutils.filehandling.actions.FileStorage;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.util.DownloadMeter;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +22,11 @@ public class FileDeliveryServlet extends HttpServlet{
 	 * Generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -6861040663569404495L;
-	
-	private static Logger log = Logger.getLogger(FileDeliveryServlet.class);
+
+    /**
+     * {@link Logger} logger.
+     */
+	private static Logger log = LoggerFactory.getLogger(FileDeliveryServlet.class);
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

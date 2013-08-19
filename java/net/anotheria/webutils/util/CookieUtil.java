@@ -1,10 +1,12 @@
 package net.anotheria.webutils.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 
 /**
  * Read and write cookies from requests and responses.
@@ -16,7 +18,7 @@ public class CookieUtil {
 	private static Logger log;
 	
 	static {
-		log = Logger.getLogger(CookieUtil.class);
+		log = LoggerFactory.getLogger(CookieUtil.class);
 	}
 	
 	public static Cookie getCookieByName(HttpServletRequest req, String name) {

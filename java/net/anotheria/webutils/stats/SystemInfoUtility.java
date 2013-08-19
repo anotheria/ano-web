@@ -1,15 +1,15 @@
 package net.anotheria.webutils.stats;
 
 
+import net.anotheria.util.IOUtils;
+import net.anotheria.util.StringUtils;
+//import org.apache.log4j.BasicConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import net.anotheria.util.IOUtils;
-import net.anotheria.util.StringUtils;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
 
 
 /**
@@ -28,7 +28,7 @@ public class SystemInfoUtility{
     private static final Timer timer = new Timer("AnoWebSysInfoUtilityReader", true);
     
     static{
-        log = Logger.getLogger(SystemInfoUtility.class);
+        log = LoggerFactory.getLogger(SystemInfoUtility.class);
         log.debug("Created SystemInfo, registered for "+REREAD_INTERVAL+" ticks");
         timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -98,7 +98,7 @@ public class SystemInfoUtility{
     }
 
     public static void main(String a[]){
-        BasicConfigurator.configure();
+//        BasicConfigurator.configure();
         try{
             Thread.sleep(10000);
         }catch(Exception e){}

@@ -1,5 +1,13 @@
 package net.anotheria.webutils.service;
 
+import net.anotheria.util.IOUtils;
+import org.apache.log4j.BasicConfigurator;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,13 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.anotheria.util.IOUtils;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
+//import org.apache.log4j.BasicConfigurator;
 
 /**
  * A very basic user manager mainly for embedded authorization purposes.
@@ -31,7 +33,7 @@ public class XMLUserManager {
 	private static boolean inited;
 	
 	static{
-		log = Logger.getLogger(XMLUserManager.class);
+		log = LoggerFactory.getLogger(XMLUserManager.class);
 	}
 	
 	private XMLUserManager(){
@@ -129,7 +131,7 @@ public class XMLUserManager {
 		
 	
 	public static void main(String a[]){
-		BasicConfigurator.configure();
+//		BasicConfigurator.configure();
 		//File f = new File("etc/appdata/users.xml");
 		//XMLUserManager.init(f);
 		XMLUserManager.init("/users.xml");

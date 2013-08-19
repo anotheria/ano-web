@@ -1,9 +1,11 @@
 package net.anotheria.webutils.stats;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.log4j.Logger;
 
 /**
  * This is a standalone utility for counting active sessions in the 
@@ -20,7 +22,7 @@ public class SessionCounter implements HttpSessionListener{
 	static{
 		sessionCount = 0;
 		maxSessionCount = 0;
-		log = Logger.getLogger(SessionCounter.class);
+		log = LoggerFactory.getLogger(SessionCounter.class);
 	}
 
 	/* (non-Javadoc)

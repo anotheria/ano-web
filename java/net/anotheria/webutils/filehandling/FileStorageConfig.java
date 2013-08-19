@@ -1,9 +1,9 @@
 package net.anotheria.webutils.filehandling;
 
-import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -40,7 +40,7 @@ public class FileStorageConfig {
 			try {
 				ConfigurationManager.INSTANCE.configure(instance);
 			} catch (Exception e) {
-				Logger.getLogger(FileStorageConfig.class).warn("FileStorage configuration failed! Relying on defaults!", e);
+                LoggerFactory.getLogger(FileStorageConfig.class).warn("FileStorage configuration failed! Relying on defaults!", e);
 			}
 		}
 		return instance;

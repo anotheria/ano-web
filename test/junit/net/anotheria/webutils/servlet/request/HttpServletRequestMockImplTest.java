@@ -2,9 +2,10 @@ package net.anotheria.webutils.servlet.request;
 
 
 import net.anotheria.webutils.servlet.session.MockHttpSessionFactory;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -20,7 +21,7 @@ import static junit.framework.Assert.*;
  * @author: h3llka
  */
 public class HttpServletRequestMockImplTest {
-	private static final Logger log = Logger.getLogger(HttpServletRequestMockImplTest.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpServletRequestMockImplTest.class);
 
 	private static final String CONTEXT_PATH = "anotheriaContext";
 	private static final String SERVER_NAME = "anotheria.net";

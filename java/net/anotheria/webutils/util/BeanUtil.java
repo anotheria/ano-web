@@ -1,9 +1,10 @@
 package net.anotheria.webutils.util;
 
+import org.slf4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
-import org.apache.log4j.Logger;
 
 @Deprecated
 public class BeanUtil {

@@ -1,12 +1,14 @@
 package net.anotheria.webutils.util;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DownloadMeterOutput extends Thread{
 	
 	private long interval;
 	
-	private Logger log = Logger.getLogger(DownloadMeterOutput.class);
+	private Logger log = LoggerFactory.getLogger(DownloadMeterOutput.class);
 	
 	public DownloadMeterOutput(long anInterval){
 		super("DownloadMeterOutput");

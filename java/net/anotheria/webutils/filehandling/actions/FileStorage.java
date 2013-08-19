@@ -5,7 +5,8 @@ import net.anotheria.util.StringUtils;
 import net.anotheria.util.io.CopyDirContents;
 import net.anotheria.webutils.filehandling.FileStorageConfig;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -33,7 +34,7 @@ public class FileStorage {
      * Static initialization block.
      */
     static {
-        log = Logger.getLogger(FileStorage.class);
+        log = LoggerFactory.getLogger(FileStorage.class);
         fileStorageDir = config.getDirectory();
     }
 
