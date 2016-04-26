@@ -1,7 +1,6 @@
 package net.anotheria.webutils.service;
 
 import net.anotheria.util.IOUtils;
-import org.apache.log4j.BasicConfigurator;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-//import org.apache.log4j.BasicConfigurator;
 
 /**
  * A very basic user manager mainly for embedded authorization purposes.
