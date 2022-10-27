@@ -1,11 +1,9 @@
 package net.anotheria.webutils.actions;
 
 import net.anotheria.maf.action.Action;
-import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.Date;
-import net.anotheria.util.mapper.ValueObjectMapperUtil;
 import net.anotheria.webutils.bean.ErrorPageBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author lrosenberg
@@ -40,12 +36,12 @@ public abstract class BaseAction implements Action {
 		log = LoggerFactory.getLogger(this.getClass());
 	}
 
-	protected ActionForward handleError(HttpServletRequest req, HttpServletResponse res, Exception e, ActionMapping mapping) {
+	protected ActionCommand handleError(HttpServletRequest req, HttpServletResponse res, Exception e, ActionMapping mapping) {
 		ErrorPageBean errbean = new ErrorPageBean();
 		errbean.setMessage(e.getMessage());
 		errbean.setStackTrace(throwableToStrackTrace(e));
 		addBeanToRequest(req, "error", errbean);
-		return mapping.findForward(getErrorPageForward());
+		return mapping.findCommand(getErrorPageForward());
 	}
 
 	@Override
@@ -93,16 +89,6 @@ public abstract class BaseAction implements Action {
 		removeBean(request, PageContext.REQUEST_SCOPE, key);
 	}
 	
-	protected void populateFormBean(HttpServletRequest req, FormBean formBean){
-		//TODO: Each parameter in request is stores as string array. This Hack converts multivalue (e.g. checkboxes) parameters to single value.
-		Map<String, String> parametersMap = new HashMap<String, String>();
-		for (Object key : req.getParameterMap().keySet()) {
-            String reqKey = String.valueOf(key);
-            parametersMap.put(reqKey, req.getParameter(reqKey));
-        }
-		ValueObjectMapperUtil.map(parametersMap, formBean);
-	}
-
 	protected void addBean(HttpServletRequest request, int scope, String key, Object value) {
 		switch (scope) {
 		case PageContext.APPLICATION_SCOPE: {

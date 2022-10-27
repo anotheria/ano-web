@@ -26,11 +26,11 @@ public class UploadFile extends BaseFileHandlingAction{
 	private static String FILE = "file";
 	
 	
-	public ActionCommand execute(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res) throws Exception {
+	public ActionCommand execute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		UploadFileBean fileBean = new UploadFileBean ();
 
-		upload(mapping,form,req,res,fileBean); 
+		upload(mapping,req,res,fileBean);
 		addBeanToSession(req, IFilesConstants.BEAN_FILE, fileBean);
 
 		return mapping.success();
@@ -40,14 +40,13 @@ public class UploadFile extends BaseFileHandlingAction{
 	/**
 	 * Uploads the file.
 	 * @param mapping
-	 * @param form
 	 * @param req
 	 * @param res
 	 * @param fileBean
 	 * @return
 	 * @throws IOException
 	 */	
-	private void upload(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res, UploadFileBean fileBean) throws IOException{
+	private void upload(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res, UploadFileBean fileBean) throws IOException{
 		log.debug("trying uploading file....");
 		MultipartRequest mpreq = new MultipartRequest(req, TEMP_DIR, MAX_FILE);
 				
