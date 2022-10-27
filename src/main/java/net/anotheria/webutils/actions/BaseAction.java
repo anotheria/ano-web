@@ -221,7 +221,7 @@ public abstract class BaseAction implements Action {
 
 	/**
 	 * Converts an integer number in a String with given number of chars; fills
-	 * in zeros if needed from the left side. Example: itoa(23, 4) -> 0023.
+	 * in zeros if needed from the left side. Example: itoa(23, 4) -&gt; 0023.
 	 */
 	public static String itoa(int i, int limit) {
 		String a = "" + i;
