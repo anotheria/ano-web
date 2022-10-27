@@ -55,21 +55,9 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-<!--
-	<build>
-		<resources>
-			<resource>
-				<directory>${project.basedir}</directory>
-				<includes>
-					<include>html/**</include>
-				</includes>
-			</resource>
-		</resources>
-	</build>
--->
-	<scm>
-		<url>svn:svn://svn.anotheria.net/opensource/ano-web/trunk</url>
-		<connection>scm:svn:svn://svn.anotheria.net/opensource/ano-web/trunk</connection>
-		<developerConnection>scm:svn:svn://svn.anotheria.net/opensource/ano-web/trunk</developerConnection>
-	</scm>
+    <scm>
+		<url>https://github.com/anotheria/ano-web</url>
+        <connection>scm:git:git@github.com:anotheria/ano-web.git</connection>
+        <developerConnection>scm:git:git@github.com:anotheria/ano-web.git</developerConnection>
+     </scm>
 </project>
