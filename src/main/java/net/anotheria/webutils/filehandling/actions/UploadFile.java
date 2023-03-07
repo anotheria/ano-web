@@ -3,7 +3,6 @@ package net.anotheria.webutils.filehandling.actions;
 import com.oreilly.servlet.MultipartRequest;
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
@@ -26,11 +25,11 @@ public class UploadFile extends BaseFileHandlingAction{
 	private static String FILE = "file";
 	
 	
-	public ActionCommand execute(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res) throws Exception {
+	public ActionCommand execute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		UploadFileBean fileBean = new UploadFileBean ();
 
-		upload(mapping,form,req,res,fileBean); 
+		upload(mapping,req,res,fileBean);
 		addBeanToSession(req, IFilesConstants.BEAN_FILE, fileBean);
 
 		return mapping.success();
@@ -40,14 +39,13 @@ public class UploadFile extends BaseFileHandlingAction{
 	/**
 	 * Uploads the file.
 	 * @param mapping
-	 * @param form
 	 * @param req
 	 * @param res
 	 * @param fileBean
 	 * @return
 	 * @throws IOException
 	 */	
-	private void upload(ActionMapping mapping, FormBean form, HttpServletRequest req, HttpServletResponse res, UploadFileBean fileBean) throws IOException{
+	private void upload(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res, UploadFileBean fileBean) throws IOException{
 		log.debug("trying uploading file....");
 		MultipartRequest mpreq = new MultipartRequest(req, TEMP_DIR, MAX_FILE);
 				
