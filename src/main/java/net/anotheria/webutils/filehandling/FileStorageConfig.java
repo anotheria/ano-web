@@ -28,6 +28,38 @@ public class FileStorageConfig {
 	 */
 	@Configure
 	private String directory;
+    /**
+     * Bucket name for asg content.
+     */
+    @Configure
+    private String bucketName;
+    /**
+     * Google project id.
+     */
+    @Configure
+    private String projectId;
+    /**
+     * Credential path for google service account file.
+     */
+    @Configure
+    private String credentialsPath;
+
+    /**
+     * Storage type.
+     */
+    @Configure
+    private String storageType;
+    /**
+     * Access key.
+     */
+    @Configure
+    private String accessKey;
+
+    /**
+     * Secret key.
+     */
+    @Configure
+    private String secretKey;
 
 	/**
 	 * Get instance method.
@@ -53,7 +85,7 @@ public class FileStorageConfig {
 		this.directory = DEF_FILE_STORAGE_DIR;
 	}
 
-	public String getDirectory() {
+    public String getDirectory() {
 		return directory;
 	}
 
@@ -61,8 +93,55 @@ public class FileStorageConfig {
 		this.directory = aFileStorageDir;
 	}
 
+    public String getBucketName() {
+        return bucketName;
+    }
 
-	@Override
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getCredentialsPath() {
+        return credentialsPath;
+    }
+
+    public void setCredentialsPath(String credentialsPath) {
+        this.credentialsPath = credentialsPath;
+    }
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    @Override
 	public String toString() {
 		return "FileStorageConfig{" +
 				"directory='" + directory + '\'' +
