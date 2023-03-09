@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Linode cloud storage.
+ * S3 cloud storage.
  *
  * @author asamoilich.
  */
-public class LinodeCloudStorage implements IStorage {
+public class S3CloudStorage implements IStorage {
 
     private final String bucketName;
     /**
@@ -32,7 +32,7 @@ public class LinodeCloudStorage implements IStorage {
      */
     private final AmazonS3 conn;
 
-    public LinodeCloudStorage(String bucketName, String accessKey, String secretKey, String endPoint) {
+    public S3CloudStorage(String bucketName, String accessKey, String secretKey, String endPoint) {
         this.bucketName = bucketName;
         try {
             AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
