@@ -2,7 +2,6 @@ package net.anotheria.webutils.actions;
 
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.service.XMLUserManager;
 
 import javax.servlet.http.Cookie;
@@ -28,7 +27,7 @@ public class LoginAction extends AccessControlMafAction{
 	
 	
 	
-	public ActionCommand execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{
+	public ActionCommand execute(ActionMapping mapping,  HttpServletRequest req, HttpServletResponse res) throws Exception{
 		// // // First try to read auth from cookie.
 		try{
 			String authString = null;
