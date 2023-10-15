@@ -3,9 +3,8 @@ package net.anotheria.webutils.filehandling.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anotheria.maf.action.ActionForward;
+import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 
 
@@ -17,9 +16,8 @@ public class GetFile extends BaseFileHandlingAction{
 	/* (non-Javadoc)
 	 * @see net.anotheria.webutils.actions.BaseAction#doExecute(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
-	public ActionForward execute(
+	public ActionCommand execute(
 		ActionMapping mapping,
-		FormBean af,
 		HttpServletRequest req,
 		HttpServletResponse res)
 		throws Exception {

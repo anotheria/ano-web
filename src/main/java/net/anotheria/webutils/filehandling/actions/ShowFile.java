@@ -2,7 +2,6 @@ package net.anotheria.webutils.filehandling.actions;
 
 import net.anotheria.maf.action.ActionCommand;
 import net.anotheria.maf.action.ActionMapping;
-import net.anotheria.maf.bean.FormBean;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import net.anotheria.webutils.filehandling.beans.UploadFileBean;
 
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ShowFile extends BaseFileHandlingAction{
 
-	public ActionCommand execute(ActionMapping mapping, FormBean bean, HttpServletRequest req, HttpServletResponse res) throws Exception{
+	public ActionCommand execute(ActionMapping mapping, HttpServletRequest req, HttpServletResponse res) throws Exception{
 		
 		UploadFileBean filebean = new UploadFileBean();
 
