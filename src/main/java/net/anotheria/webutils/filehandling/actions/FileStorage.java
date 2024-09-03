@@ -104,6 +104,16 @@ public class FileStorage {
         }
     }
 
+    public static void storeTemporaryFilePermanently(TemporaryFileHolder temporaryFileHolder) {
+        try {
+            log.debug("trying to TemporaryFileHolder store(): {}", temporaryFileHolder.getFileName());
+            storage.storeFile(temporaryFileHolder.getData(), temporaryFileHolder.getFileName());
+        } catch (Exception e) {
+            log.error("storeTemporaryFilePermanently", e);
+            throw new RuntimeException("FileStorageFailed: " + e.getMessage());
+        }
+    }
+
     /**
      * Makes copy of source file on file system, with new generated file name but same extension.
      *
