@@ -6,7 +6,6 @@ import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 /**
@@ -79,13 +78,5 @@ public class FsStorage implements IStorage {
         } finally {
             IOUtils.closeIgnoringException(fIn);
         }
-    }
-
-    @Override
-    public File getFile(String fileName) throws FileNotFoundException {
-        File file = new File(fileStorageDir + File.separator + fileName);
-        if (file.exists() && !file.isDirectory())
-            return file;
-        throw new FileNotFoundException(fileName);
     }
 }

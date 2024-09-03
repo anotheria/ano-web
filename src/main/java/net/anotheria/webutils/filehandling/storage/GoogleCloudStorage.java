@@ -9,15 +9,10 @@ import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageClass;
 import com.google.cloud.storage.StorageOptions;
-import net.anotheria.util.IOUtils;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
@@ -100,23 +95,5 @@ public class GoogleCloudStorage implements IStorage {
         f.setMimeType(fileBlob.getContentType());
         f.setLastModified(fileBlob.getUpdateTime());
         return f;
-    }
-
-    @Override
-    public File getFile(String fileName) throws FileNotFoundException {
-        byte[] data = cloudStorage.readAllBytes(bucketName, fileName);
-        File file = new File(fileName);
-        FileOutputStream fos = new FileOutputStream(file);
-        try {
-            fos.write(data);
-            if (file.isFile()) {
-                return file;
-            }
-            throw new FileNotFoundException(fileName);
-        } catch (IOException e) {
-            throw new FileNotFoundException(e.getMessage());
-        } finally {
-            IOUtils.closeIgnoringException(fos);
-        }
     }
 }

@@ -2,9 +2,6 @@ package net.anotheria.webutils.filehandling.storage;
 
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 /**
  * Storage interface.
  *
@@ -53,13 +50,4 @@ public interface IStorage {
      * @throws Exception if any errors occurs
      */
     TemporaryFileHolder loadFile(String fileName) throws Exception;
-
-    /**
-     * Get file.
-     *
-     * @param fileName       file name
-     * @return {@link File}
-     * @throws FileNotFoundException if file not found
-     */
-    File getFile(String fileName) throws FileNotFoundException;
 }

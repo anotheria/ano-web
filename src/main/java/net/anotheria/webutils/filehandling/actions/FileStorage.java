@@ -167,19 +167,6 @@ public class FileStorage {
         return null;
     }
 
-//    /**
-//     * Return {@link File} with selected  name if such exists.
-//     *
-//     * @param name file name
-//     * @return {@link File}
-//     * @throws java.io.FileNotFoundException if  file does not exists
-//     */
-//    public static File getFile(String name) throws FileNotFoundException {
-//        if (StringUtils.isEmpty(name))
-//            return null;
-//        return storage.getFile(name);
-//    }
-
     /**
      * Generates file name and appends it with given file extension.
      *
@@ -202,12 +189,6 @@ public class FileStorage {
             fileName = filePrefix + i + ext;
 
         return fileName;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(generateFileName("test.jpg"));
-        System.out.println(generateFileName("test.txt"));
-        System.out.println(generateFileName("test.1.txt"));
     }
 }
 
