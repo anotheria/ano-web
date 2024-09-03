@@ -16,8 +16,23 @@ import java.io.FileOutputStream;
  */
 public class FsStorage implements IStorage {
 
+    /**
+     * FileStorage 'fileStorageDir'.
+     */
+    public String fileStorageDir;
+
+    /**
+     * Directory for file storage.
+     *
+     * @param fileStorageDir
+     */
+    public FsStorage(String fileStorageDir) {
+        this.fileStorageDir = fileStorageDir;
+    }
+
     @Override
-    public void storeFile(byte[] fileContent, String filePath) throws Exception {
+    public void storeFile(byte[] fileContent, String fileName) throws Exception {
+        String filePath = fileStorageDir + File.separator + fileName;
         FileOutputStream fOut = null;
         try {
             fOut = new FileOutputStream(filePath);
@@ -28,27 +43,28 @@ public class FsStorage implements IStorage {
     }
 
     @Override
-    public boolean isFileExists(String filePath) {
+    public boolean isFileExists(String fileName) {
+        String filePath = fileStorageDir + File.separator + fileName;
         return new File(filePath).exists();
     }
 
     @Override
-    public void cloneFile(String sourceFilePath, String destinationFilePath) throws Exception {
-        File sourceFile = new File(sourceFilePath);
-        File destinationFile = new File(destinationFilePath);
+    public void cloneFile(String sourceFileName, String destinationFileName) throws Exception {
+        File sourceFile = new File(fileStorageDir + File.separator +sourceFileName);
+        File destinationFile = new File(fileStorageDir + File.separator +destinationFileName);
 
         if (sourceFile.exists())
             CopyDirContents.copy(sourceFile, destinationFile);
     }
 
     @Override
-    public void removeFile(String filePath) throws Exception {
-        File file = new File(filePath);
+    public void removeFile(String fileName) throws Exception {
+        File file = new File(fileStorageDir + File.separator + fileName);
         file.delete();
     }
 
     @Override
-    public TemporaryFileHolder loadFile(String fileStorageDir, String fileName) throws Exception {
+    public TemporaryFileHolder loadFile(String fileName) throws Exception {
         FileInputStream fIn = null;
         try {
             File file = new File(fileStorageDir + File.separator + fileName);
@@ -66,7 +82,7 @@ public class FsStorage implements IStorage {
     }
 
     @Override
-    public File getFile(String fileStorageDir, String fileName) throws FileNotFoundException {
+    public File getFile(String fileName) throws FileNotFoundException {
         File file = new File(fileStorageDir + File.separator + fileName);
         if (file.exists() && !file.isDirectory())
             return file;

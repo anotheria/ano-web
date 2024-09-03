@@ -55,43 +55,44 @@ public class S3CloudStorage implements IStorage {
     }
 
     @Override
-    public void storeFile(byte[] fileContent, String filePath) throws Exception {
+    public void storeFile(byte[] fileContent, String fileName) throws Exception {
         ObjectMetadata metadata = new ObjectMetadata();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContent);
         metadata.setContentLength(inputStream.available());
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, filePath, inputStream, metadata);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, inputStream, metadata);
         conn.putObject(putObjectRequest);
     }
 
     @Override
-    public boolean isFileExists(String filePath) {
-        return conn.doesObjectExist(bucketName, filePath);
+    public boolean isFileExists(String fileName) {
+        return conn.doesObjectExist(bucketName, fileName);
     }
 
     @Override
-    public void cloneFile(String sourceFilePath, String destinationFilePath) throws Exception {
-        S3Object object = conn.getObject(new GetObjectRequest(bucketName, sourceFilePath));
-        conn.putObject(bucketName, destinationFilePath, new ByteArrayInputStream(IOUtils.readBytes(object.getObjectContent())), new ObjectMetadata());
+    public void cloneFile(String sourceFileName, String destinationFileName) throws Exception {
+        S3Object object = conn.getObject(new GetObjectRequest(bucketName, sourceFileName));
+        conn.putObject(bucketName, destinationFileName, new ByteArrayInputStream(IOUtils.readBytes(object.getObjectContent())), new ObjectMetadata());
     }
 
     @Override
-    public void removeFile(String filePath) throws Exception {
-        conn.deleteObject(bucketName, filePath);
+    public void removeFile(String fileName) throws Exception {
+        conn.deleteObject(bucketName, fileName);
     }
 
     @Override
-    public TemporaryFileHolder loadFile(String fileStorageDir, String fileName) throws Exception {
-        S3Object object = conn.getObject(new GetObjectRequest(bucketName, fileStorageDir + File.separator + fileName));
+    public TemporaryFileHolder loadFile(String fileName) throws Exception {
+        S3Object object = conn.getObject(new GetObjectRequest(bucketName, fileName));
         TemporaryFileHolder f = new TemporaryFileHolder();
         f.setData(IOUtils.readBytes(object.getObjectContent()));
         f.setFileName(fileName);
+        f.setMimeType(object.getObjectMetadata().getContentType());
         f.setLastModified(object.getObjectMetadata().getLastModified().getTime());
         return f;
     }
 
     @Override
-    public File getFile(String fileStorageDir, String fileName) throws FileNotFoundException {
-        S3Object object = conn.getObject(new GetObjectRequest(bucketName, fileStorageDir + File.separator + fileName));
+    public File getFile(String fileName) throws FileNotFoundException {
+        S3Object object = conn.getObject(new GetObjectRequest(bucketName, fileName));
         File file = new File(fileName);
         FileOutputStream fos = new FileOutputStream(file);
         try {

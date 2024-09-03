@@ -6,7 +6,7 @@ package net.anotheria.webutils.filehandling.storage;
  * @author asamoilich.
  */
 public class StorageFactory {
-    public static IStorage createStorage(String storageType, String bucketName, String credentials, String projectId, String accessKey, String secretKey) {
+    public static IStorage createStorage(String fileStorageDir, String storageType, String bucketName, String credentials, String projectId, String accessKey, String secretKey) {
         switch (StorageType.getByTypeValue(storageType)) {
             case GCS:
                 return new GoogleCloudStorage(bucketName, credentials, projectId);
@@ -14,7 +14,7 @@ public class StorageFactory {
                 return new S3CloudStorage(bucketName, accessKey, secretKey, projectId);
             case FS:
             default:
-                return new FsStorage();
+                return new FsStorage(fileStorageDir);
         }
     }
 }

@@ -16,17 +16,7 @@ public class FileStorage {
     /**
      * FileStorage 'log'.
      */
-    static Logger log;
-    /**
-     * FileStorage 'fileStorageDir'.
-     */
-    public static String fileStorageDir;
-
-    /**
-     * FileStorage config.
-     * Actually config as instance of {@link FileStorageConfig}.
-     */
-    private static final FileStorageConfig config = FileStorageConfig.getInstance();
+    static Logger log = LoggerFactory.getLogger(FileStorage.class);
 
     /**
      * {@link IStorage} instance.
@@ -37,14 +27,9 @@ public class FileStorage {
      * Static initialization block.
      */
     static {
-        log = LoggerFactory.getLogger(FileStorage.class);
-        fileStorageDir = config.getDirectory();
-        storage = StorageFactory.createStorage(config.getStorageType(), config.getBucketName(), config.getCredentialsPath(),
+        FileStorageConfig config = FileStorageConfig.getInstance();
+        storage = StorageFactory.createStorage(config.getDirectory(), config.getStorageType(), config.getBucketName(), config.getCredentialsPath(),
                 config.getProjectId(), config.getAccessKey(), config.getSecretKey());
-    }
-
-    public static void setFileStorageDir(String dir) {
-        fileStorageDir = dir;
     }
 
     /**
@@ -111,8 +96,8 @@ public class FileStorage {
     public static void storeFilePermanently(HttpServletRequest req, String name, String key) {
         try {
             TemporaryFileHolder fileHolder = (key == null) ? getTemporaryFile(req) : getTemporaryFile(req, key);
-            log.debug("trying to store(): " + fileStorageDir + File.separator + name);
-            storage.storeFile(fileHolder.getData(), fileStorageDir + File.separator + name);
+            log.debug("trying to store(): " + name);
+            storage.storeFile(fileHolder.getData(), name);
         } catch (Exception e) {
             log.error("storeFilePermanently", e);
             throw new RuntimeException("FileStorageFailed: " + e.getMessage());
@@ -126,14 +111,12 @@ public class FileStorage {
      * @return new file name
      */
     public static String cloneFilePermanently(String fileName) {
-        String sourceFilePath = fileStorageDir + File.separator + fileName;
-        if (StringUtils.isEmpty(fileName) || storage.isFileExists(sourceFilePath))
+        if (StringUtils.isEmpty(fileName) || storage.isFileExists(fileName))
             return "";
 
         try {
             String generateFileName = generateFileName(fileName);
-            String destinationFilePath = fileStorageDir + File.separator + generateFileName;
-            storage.cloneFile(sourceFilePath, destinationFilePath);
+            storage.cloneFile(fileName, generateFileName);
             return generateFileName;
         } catch (Exception e) {
             log.error("cloneFilePermanently", e);
@@ -150,8 +133,8 @@ public class FileStorage {
         if (StringUtils.isEmpty(name))
             return;
         try {
-            log.debug("trying to remove: " + fileStorageDir + File.separator + name);
-            storage.removeFile(fileStorageDir + File.separator + name);
+            log.debug("trying to remove: " + name);
+            storage.removeFile(name);
         } catch (Exception e) {
             log.error("removeFilePermanently()", e);
             throw new RuntimeException("FileStorageFailed: " + e.getMessage());
@@ -167,25 +150,25 @@ public class FileStorage {
             return null;
 
         try {
-            return storage.loadFile(fileStorageDir, name);
+            return storage.loadFile(name);
         } catch (Exception e) {
             log.warn("loadFile()", e);
         }
         return null;
     }
 
-    /**
-     * Return {@link File} with selected  name if such exists.
-     *
-     * @param name file name
-     * @return {@link File}
-     * @throws java.io.FileNotFoundException if  file does not exists
-     */
-    public static File getFile(String name) throws FileNotFoundException {
-        if (StringUtils.isEmpty(name))
-            return null;
-        return storage.getFile(fileStorageDir, name);
-    }
+//    /**
+//     * Return {@link File} with selected  name if such exists.
+//     *
+//     * @param name file name
+//     * @return {@link File}
+//     * @throws java.io.FileNotFoundException if  file does not exists
+//     */
+//    public static File getFile(String name) throws FileNotFoundException {
+//        if (StringUtils.isEmpty(name))
+//            return null;
+//        return storage.getFile(name);
+//    }
 
     /**
      * Generates file name and appends it with given file extension.
@@ -205,7 +188,7 @@ public class FileStorage {
         fileName = filePrefix + ext;
 
         // if file with such name already exist - append index
-        for (int i = 1; storage.isFileExists(fileStorageDir + File.separator + fileName); i++)
+        for (int i = 1; storage.isFileExists(fileName); i++)
             fileName = filePrefix + i + ext;
 
         return fileName;

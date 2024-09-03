@@ -1,6 +1,7 @@
 package net.anotheria.webutils.filehandling.storage;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
@@ -65,53 +66,45 @@ public class GoogleCloudStorage implements IStorage {
     }
 
     @Override
-    public void storeFile(byte[] fileContent, String filePath) throws Exception {
-        BlobId blobId = BlobId.of(bucketName, filePath);
+    public void storeFile(byte[] fileContent, String fileName) throws Exception {
+        BlobId blobId = BlobId.of(bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         cloudStorage.create(blobInfo, fileContent);
     }
 
     @Override
-    public boolean isFileExists(String filePath) {
-        return cloudStorage.get(bucketName, filePath) != null;
+    public boolean isFileExists(String fileName) {
+        return cloudStorage.get(bucketName, fileName) != null;
     }
 
     @Override
-    public void cloneFile(String sourceFilePath, String destinationFilePath) throws Exception {
-        byte[] data = cloudStorage.readAllBytes(bucketName, sourceFilePath);
-        BlobId blobId = BlobId.of(bucketName, destinationFilePath);
+    public void cloneFile(String sourceFileName, String destinationFileName) throws Exception {
+        byte[] data = cloudStorage.readAllBytes(bucketName, sourceFileName);
+        BlobId blobId = BlobId.of(bucketName, destinationFileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         cloudStorage.create(blobInfo, data);
     }
 
     @Override
-    public void removeFile(String filePath) throws Exception {
-        cloudStorage.delete(bucketName, filePath);
+    public void removeFile(String fileName) throws Exception {
+        cloudStorage.delete(bucketName, fileName);
     }
 
     @Override
-    public TemporaryFileHolder loadFile(String fileStorageDir, String fileName) throws Exception {
-        FileOutputStream fos = null;
-        try {
-            byte[] data = cloudStorage.readAllBytes(bucketName, fileStorageDir + File.separator + fileName);
-            File tempFile = File.createTempFile(fileName, null);
-            fos = new FileOutputStream(tempFile);
-            fos.write(data);
-            long lastModified = tempFile.lastModified();
-
-            TemporaryFileHolder f = new TemporaryFileHolder();
-            f.setData(data);
-            f.setFileName(fileName);
-            f.setLastModified(lastModified);
-            return f;
-        } finally {
-            IOUtils.closeIgnoringException(fos);
-        }
+    public TemporaryFileHolder loadFile(String fileName) throws Exception {
+        byte[] fileData = cloudStorage.readAllBytes(bucketName, fileName);
+        Blob fileBlob = cloudStorage.get(bucketName, fileName);
+        TemporaryFileHolder f = new TemporaryFileHolder();
+        f.setData(fileData);
+        f.setFileName(fileName);
+        f.setMimeType(fileBlob.getContentType());
+        f.setLastModified(fileBlob.getUpdateTime());
+        return f;
     }
 
     @Override
-    public File getFile(String fileStorageDir, String fileName) throws FileNotFoundException {
-        byte[] data = cloudStorage.readAllBytes(bucketName, fileStorageDir + File.separator + fileName);
+    public File getFile(String fileName) throws FileNotFoundException {
+        byte[] data = cloudStorage.readAllBytes(bucketName, fileName);
         File file = new File(fileName);
         FileOutputStream fos = new FileOutputStream(file);
         try {
