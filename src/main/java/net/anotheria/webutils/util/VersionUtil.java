@@ -2,7 +2,7 @@ package net.anotheria.webutils.util;
 
 import java.io.File;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import net.anotheria.util.maven.MavenVersion;
 import net.anotheria.util.maven.MavenVersionReader;

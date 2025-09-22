@@ -2,8 +2,8 @@ package net.anotheria.webutils.util;
 
 import org.slf4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 
 @Deprecated

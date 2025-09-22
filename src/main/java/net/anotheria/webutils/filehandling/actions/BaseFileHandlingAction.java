@@ -1,6 +1,6 @@
 package net.anotheria.webutils.filehandling.actions;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import net.anotheria.webutils.actions.BaseAction;
 import net.anotheria.webutils.filehandling.beans.TemporaryFileHolder;
